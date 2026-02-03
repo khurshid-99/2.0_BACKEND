@@ -1,0 +1,120 @@
+.main {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+
+  .form_contanier {
+    form {
+      width: 30rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      border: 1px solid whitesmoke;
+
+      border-radius: 0.75rem;
+      padding: 0.25rem;
+
+      input,
+      textarea {
+        outline: none;
+        border: none;
+        border-radius: 0.25rem;
+        padding: 0.75rem;
+
+        font-size: 1.5rem;
+      }
+
+      textarea {
+        height: 10rem;
+        resize: none;
+      }
+
+      .submit_btn {
+        padding: 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+
+        border: none;
+        border-radius: 0.25rem;
+
+        text-transform: uppercase;
+
+        &:active {
+          transform: scale(0.99);
+        }
+      }
+    }
+  }
+
+  .notes {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    margin-top: 1rem;
+
+    .note {
+      width: 20rem;
+      background-color: #7231ff;
+      border-radius: 0.55rem;
+
+      padding: 0.25rem;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      gap: 1rem;
+
+      h1 {
+        font-size: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #06070a;
+
+        text-align: center;
+      }
+
+      textarea {
+        resize: none;
+        width: 100%;
+        outline: none;
+        border: none;
+        background-color: transparent;
+
+        color: whitesmoke;
+
+        font-size: 1.2rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        padding-block: 0.75rem;
+        text-wrap: wrap;
+      }
+
+      .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .delete_btn,
+        .edite_btn,
+        .save_btn,
+        .cancel_btn {
+          width: 100%;
+          font-size: 1.5rem;
+          padding: 0.5rem;
+          border-radius: 0.25rem;
+          border: none;
+
+          &:active {
+            transform: scale(0.99);
+          }
+        }
+      }
+    }
+  }
+}
