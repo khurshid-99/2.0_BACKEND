@@ -7,6 +7,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(express.static("./public"));
 
 // POST - Create user and save data in server
 // const { name, image, description } = req.body;
@@ -27,7 +28,7 @@ app.post("/api/notes", async (req, res) => {
 });
 
 // GET - Get featch all data from databas and send frontend
-// 
+//
 
 app.get("/api/notes", async (req, res) => {
   const notes = await noteModel.find();
@@ -49,7 +50,7 @@ app.delete("/api/notes/:id", async (req, res) => {
   });
 });
 
-// PATCH - Patch update a note 
+// PATCH - Patch update a note
 app.patch("/api/notes/:id", async (req, res) => {
   const { description } = req.body;
   const { id } = req.params;

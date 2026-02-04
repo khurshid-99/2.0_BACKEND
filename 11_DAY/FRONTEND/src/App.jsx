@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./app.scss";
-import testImage from "../public/test.jpeg";
 import axios from "axios";
 const App = () => {
   const [name, setName] = useState("");
