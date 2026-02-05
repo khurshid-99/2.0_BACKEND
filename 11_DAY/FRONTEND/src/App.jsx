@@ -12,7 +12,7 @@ const App = () => {
 
   async function getNotes() {
     try {
-      const { data } = await axios.get("https://your-service-name.onrender.com/api/notes");
+      const { data } = await axios.get("https://two-0-backend-1.onrender.com/api/notes");
       setNotes(data.notes);
     } catch (error) {
       console.error(`Can't featch notes data ${error}`);
@@ -22,7 +22,7 @@ const App = () => {
   async function crateNote(e) {
     e.preventDefault();
     try {
-      await axios.post(`https://your-service-name.onrender.com/api/notes`, {
+      await axios.post(`https://two-0-backend-1.onrender.com/api/notes`, {
         name,
         image,
         description: detils,
@@ -41,7 +41,7 @@ const App = () => {
 
   async function deleteNote(id) {
     try {
-      await axios.delete(`https://your-service-name.onrender.com/api/notes/${id}`);
+      await axios.delete(`https://two-0-backend-1.onrender.com/api/notes/${id}`);
       getNotes();
       console.log(`note deleted successfully`);
     } catch (error) {
@@ -52,7 +52,7 @@ const App = () => {
   async function updateNote(id) {
     try {
       const updateNote = await axios.patch(
-        `https://your-service-name.onrender.com/api/notes/${id}`,
+        `https://two-0-backend-1.onrender.com/api/notes/${id}`,
         { description: newDescription },
       );
 
