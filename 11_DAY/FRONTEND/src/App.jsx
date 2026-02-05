@@ -51,7 +51,7 @@ const App = () => {
 
   async function updateNote(id) {
     try {
-      const updateNote = await axios.patch(
+       await axios.patch(
         `https://two-0-backend-1.onrender.com/api/notes/${id}`,
         { description: newDescription },
       );
