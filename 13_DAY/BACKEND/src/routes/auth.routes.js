@@ -11,23 +11,29 @@ authRoute.post("/register", async (req, res) => {
 
   const isUserAllreadyExied = userModel.findOne({ email });
 
-  if (isUserAllreadyExied) {
+  if (!isUserAllreadyExied) {
     return res.status(409).json({
       message: "User allready exied with this email address",
     });
   }
 
-  const hasPassword = crypto.createHash("md5").update(password).digest("hex");
+  const hasPassword = await crypto
+    .createHash("md5")
+    .update(password)
+    .digest("hex");
 
   const user = await userModel.create({
     name,
     email,
-    hasPassword,
+    password: hasPassword,
   });
 
   const token = jwt.sign(
-    { id: user._id, email: user.email },
-    process.env.JWT_SERET,
+    {
+      id: user._id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
   );
 
   res.cookie("jwt_token", token);
@@ -58,14 +64,18 @@ authRoute.post("/login", async (req, res) => {
     });
   }
 
-  const token = jwt.sign({
-    id: user._id,
-    email: email,
-  });
+  const token = jwt.sign(
+    {
+      id: user._id,
+      email: email,
+    },
+    process.env.JWT_SECRET,
+  );
 
   res.status(200).json({
     message: "User loggnd successfully",
     token,
+    user,
   });
 });
 
