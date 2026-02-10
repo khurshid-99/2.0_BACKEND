@@ -1,0 +1,28 @@
+const mongooes = require("mongoose");
+
+const userSchema = new mongooes.Schema({
+  username: {
+    type: String,
+    require: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    require: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    require: true,
+  },
+  bio: String,
+  profile: {
+    type: String,
+    default:
+      "https://imagekit.io/dashboard/media-library/detail/698b72f85c7cd75eb8a96dcf",
+  },
+});
+
+const userModel = mongooes.model("user", userSchema);
+
+module.exports = userModel;
