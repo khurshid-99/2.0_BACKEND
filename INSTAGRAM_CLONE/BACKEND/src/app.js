@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const authRouter = require("./routes/auth.routes");
+
 
 const app = express();
 
@@ -8,6 +8,19 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+/**
+ * @API apiName
+ * @DESCRIPTION  description
+ * @CLIENT_INPUT  data received from client
+ * @RESPONSE  what this API returns
+ * @AUTHOR  KHURSHID ALAM
+ */
+const authRouter = require("./routes/auth.routes");
+const postRouter = require("./routes/post.route");
+const followRouter = require("./routes/follow.route");
+
 app.use("/api/auth/", authRouter);
+app.use("/api/posts/", postRouter);
+app.use("/api/user/", followRouter)
 
 module.exports = app;
