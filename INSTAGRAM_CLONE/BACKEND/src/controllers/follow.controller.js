@@ -44,4 +44,34 @@ async function followUserController(req, res) {
   });
 }
 
-module.exports = { followUserController };
+async function unfollowUserController(req, res) {
+  const followerUsername = req.user.username;
+  const followeeUsername = req.params.username;
+
+  if (followeeUsername === followerUsername) {
+    return res.status(400).json({
+      message: "You cannot unfollow your self",
+    });
+  }
+  const isFollowExists = await followModel.findOne({
+    follower: followerUsername,
+    followee: followeeUsername,
+  });
+
+  if (!isFollowExists) {
+    return res.status(200).json({
+      message: `"You are not following this ${followeeUsername} user `,
+    });
+  }
+
+  await followModel.findOneAndDelete({
+    follower: followerUsername,
+    followee: followeeUsername,
+  });
+
+  res.status(200).json({
+    message: `You unfollowed this ${followeeUsername} user.`,
+  });
+}
+
+module.exports = { followUserController, unfollowUserController };
