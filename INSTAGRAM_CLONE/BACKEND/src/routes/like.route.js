@@ -2,7 +2,7 @@ const express = require("express");
 const {
   likePostController,
   removePostLikeController,
-} = require("../controllers/like.contoller");
+} = require("../controllers/like.controller");
 const identifyUser = require("../middlewares/auth.middleware");
 
 const likeRouter = express.Router();

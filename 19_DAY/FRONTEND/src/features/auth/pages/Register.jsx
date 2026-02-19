@@ -1,43 +1,68 @@
-main{
-    min-height: 100vh;
-    width: 100%;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+import axios from "axios";
+import { useState } from "react";
+import "../styles/form.scss";
+import { Link } from "react-router";
 
-.form-container{
-    height: fit-content;
-    min-width: 400px;
+const Register = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-    form{
-        display: flex;
-        flex-direction: column;
-        gap:1rem;
+    try {
+      const respons = await axios.post(
+        `http://localhost:3000/api/auth/register`,
+        {
+          username: username,
+          email: email,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
-        input,button{
-            border: none;
-            outline: none;
-            padding-inline: 1.5rem;
-            padding-block: 1rem;
-            border-radius: 1rem;
-        }
-
-        button{
-            background-color: #bd0c23;
-            color: whitesmoke;
-            cursor: pointer;
-        }
+      console.log(respons);
+    } catch (error) {
+      console.log(error);
     }
+  }
+  return (
+    <main>
+      <div className="form_container">
+        <h1>Register</h1>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input
+            value={username}
+            onInput={(e) => setUsername(e.target.value)}
+            type="text"
+            placeholder="Enter your username"
+          />
+          <input
+            value={email}
+            onInput={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Enter your email"
+          />
+          <input
+            value={password}
+            onInput={(e) => setPassword(e.target.value)}
+            type="text"
+            placeholder="Enter your password"
+          />
+          <button type="submit">Register</button>
+        </form>
+        <p>
+          If you have account then go to{" "}
+          <Link to={"/login"} className="toggleAuthForm">
+            login
+          </Link>
+        </p>
+      </div>
+    </main>
+  );
+};
 
-    .toggleAuthForm{
-        color: #bd0c23;
-        cursor: pointer;
-        text-decoration: none;
-    }
-}
+export default Register;
