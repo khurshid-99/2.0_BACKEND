@@ -1,7 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 
-
 const app = express();
 
 // express middlewares
@@ -18,9 +17,11 @@ app.use(cookieParser());
 const authRouter = require("./routes/auth.routes");
 const postRouter = require("./routes/post.route");
 const followRouter = require("./routes/follow.route");
+const likeRouter = require("./routes/like.route");
 
 app.use("/api/auth/", authRouter);
 app.use("/api/posts/", postRouter);
-app.use("/api/user/", followRouter)
+app.use("/api/user/", followRouter);
+app.use("/api/post/", likeRouter);
 
 module.exports = app;

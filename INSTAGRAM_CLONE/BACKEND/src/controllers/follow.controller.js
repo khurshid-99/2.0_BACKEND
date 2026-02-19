@@ -74,4 +74,48 @@ async function unfollowUserController(req, res) {
   });
 }
 
-module.exports = { followUserController, unfollowUserController };
+async function followStatusController(req, res) {
+  const followerUsername = req.user.username;
+  const followeeUsername = req.params.username;
+  const { status } = req.body;
+  console.log(status);
+
+  if (followeeUsername === followerUsername) {
+    return res.status(409).json({
+      message: "You cannot accecpt yourself requiest. ",
+    });
+  }
+
+  const isFollow = await followModel.findOne({
+    follower: followerUsername,
+    followee: followeeUsername,
+  });
+
+  if (!isFollow) {
+    return res.status(409).json({
+      message: `"You are not follow this ${followeeUsername} user.`,
+      user: followeeUsername,
+    });
+  }
+
+  const followStatus = await followModel.findOneAndUpdate(
+    {
+      follower: followerUsername,
+      followee: followeeUsername,
+      status: "pending",
+    },
+    { status },
+    { new: true },
+  );
+
+  return res.status(200).json({
+    message: "Update follow status.",
+    follow: followStatus,
+  });
+}
+
+module.exports = {
+  followUserController,
+  unfollowUserController,
+  followStatusController,
+};
