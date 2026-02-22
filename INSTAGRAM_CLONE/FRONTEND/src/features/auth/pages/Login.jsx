@@ -2,27 +2,45 @@ import axios from "axios";
 import { useState } from "react";
 import "../styles/form.scss";
 import { Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+  const { user, loding, handleLogin } = useAuth();
+
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      const respons = await axios.post(
-        `http://localhost:3000/api/auth/login`,
-        {
-          username,
-          password,
-        },
-        { withCredentials: true },
-      );
 
-      console.log(respons);
-    } catch (error) {
-      console.log(error);
-    }
+    await handleLogin(username, password);
+
+    navigate("/");
+
+    // try {
+    //   const respons = await axios.post(
+    //     `http://localhost:3000/api/auth/login`,
+    //     {
+    //       username,
+    //       password,
+    //     },
+    //     { withCredentials: true },
+    //   );
+
+    //   console.log(respons);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  }
+
+  if (loding) {
+    return (
+      <main>
+        <h1>Loding...</h1>
+      </main>
+    );
   }
 
   return (
@@ -43,7 +61,7 @@ const Login = () => {
             type="text"
             placeholder="Enter your password"
           />
-          <button type="submit">Register</button>
+          <button type="submit">Login</button>
         </form>
         <p>
           You don't have account to{" "}

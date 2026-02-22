@@ -34,7 +34,7 @@ async function followController(req, res) {
 
   const followRecord = await followModel.create({
     follower: followerUsername,
-    followeeUsername: followeeUsername,
+    followee: followeeUsername,
   });
 
   return res.status(201).json({

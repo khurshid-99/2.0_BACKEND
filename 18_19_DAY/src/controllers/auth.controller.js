@@ -61,7 +61,7 @@ async function loginController(req, res) {
     });
   }
 
-  const hasPassword = await bcrypt.compare(password, user.password);
+  const hasPassword = await bcrypt.compare(password, isUser.password);
 
   if (!hasPassword) {
     return res.status(401).json({

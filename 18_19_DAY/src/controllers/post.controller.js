@@ -10,19 +10,23 @@ const client = new ImageKit({
 async function createPostController(req, res) {
   const { caption } = req.body;
   const file = req.file;
+  // console.log(file.originalname);
+  
 
   const uploadFile = await client.files.upload({
     file: await toFile(Buffer.from(file.buffer), "file"),
-    fileNamd: "post_test",
+    fileName: `${file.originalname}`,
     folderName: "cohort_2.0/",
   });
 
   /**
    * @DATABASE : Creating New Entry in postModel with req.body and req.file and req.user.id
    */
+  // console.log(uploadFile);
+  
   const post = await postModel.create({
     caption,
-    imgUri: uploadFile.uri,
+    imgUri: uploadFile.url,
     user: req.user.id,
   });
 

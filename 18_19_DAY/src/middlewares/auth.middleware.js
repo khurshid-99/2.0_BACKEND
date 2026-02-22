@@ -20,7 +20,7 @@ async function userIdentify(req, res, next) {
   }
 
   // Changed: Use 'req.user' so the next middleware can access it.
-  res.user = decode;
+  req.user = decode;
   next();
 }
 
