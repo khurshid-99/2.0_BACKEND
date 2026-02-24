@@ -9,19 +9,28 @@ export const useAuth = () => {
 
   const handleLogin = async (username, password) => {
     setLoding(true);
-
-    const respons = await login(username, password);
-
-    setUser(respons.user);
-    setLoding(false);
+    try {
+      const respons = await login(username, password);
+      setUser(respons.user);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoding(false);
+    }
   };
 
   const handleRegister = async (username, email, password) => {
     setLoding(true);
-    const respons = await register(username, email, password);
 
-    setUser(respons.user);
-    setLoding(false);
+    try {
+      const respons = await register(username, email, password);
+
+      setUser(respons.user);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoding(false);
+    }
   };
 
   return { user, loding, handleLogin, handleRegister };
