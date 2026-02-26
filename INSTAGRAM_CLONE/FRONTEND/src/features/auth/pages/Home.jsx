@@ -1,8 +1,10 @@
-import React from 'react'
-
+import "./home.scss"
+import img from "../../../../public/bmw-m3.jpg"
 const Home = () => {
   return (
-    <div>Home</div>
+    <main>
+      <img src={img} alt="" />
+    </main>
   )
 }
 

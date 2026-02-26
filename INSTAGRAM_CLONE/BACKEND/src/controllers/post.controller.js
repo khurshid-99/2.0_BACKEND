@@ -66,8 +66,30 @@ async function getPostDetails(req, res) {
     post,
   });
 }
+
+async function getFeedController(req, res) {
+
+  const id = req.user.id
+
+  const posts = await postModle.find().populate("user");
+  // console.log(posts);
+  
+
+  if (!posts) {
+    return res.status(404).json({
+      message: "Posts not found",
+    });
+  }
+
+  res.status(200).json({
+    message: "Posts feathed successfully",
+    posts,
+  });
+}
+
 module.exports = {
   createPostController,
   getAllPostsController,
   getPostDetails,
+  getFeedController
 };

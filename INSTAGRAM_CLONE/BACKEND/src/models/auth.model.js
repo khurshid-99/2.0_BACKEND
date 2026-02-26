@@ -21,7 +21,7 @@ const auhtSchema = new mongoose.Schema({
   profile: {
     type: String,
     default:
-      "https://imagekit.io/dashboard/media-library/detail/698b72f85c7cd75eb8a96dcf",
+      "https://ik.imagekit.io/1ahncttke/651c6da502353948bdc929f02da2b8e0.jpg?updatedAt=1770746616862",
   },
 });
 

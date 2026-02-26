@@ -8,6 +8,7 @@ const {
   createPostController,
   getAllPostsController,
   getPostDetails,
+  getFeedController,
 } = require("../controllers/post.controller");
 
 const postRouter = express.Router();
@@ -15,5 +16,6 @@ const postRouter = express.Router();
 postRouter.post("/", identifyUser, upload.single("post"), createPostController);
 postRouter.get("/", identifyUser, getAllPostsController);
 postRouter.get("/details/:postId", identifyUser, getPostDetails);
+postRouter.get("/feed", identifyUser, getFeedController);
 
 module.exports = postRouter;
