@@ -53,7 +53,7 @@ async function loginController(req, res) {
 
   const user = await userModel.findOne({
     $or: [{ username }, { email }],
-  });
+  }).select("+password");
 
   if (!user) {
     return res.status(401).json({

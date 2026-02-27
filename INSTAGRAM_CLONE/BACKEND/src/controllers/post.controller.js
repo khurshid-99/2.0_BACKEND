@@ -1,6 +1,7 @@
 const postModle = require("../models/post.model");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
+const likeModel = require("../models/like.model");
 
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -9,19 +10,20 @@ const client = new ImageKit({
 async function createPostController(req, res) {
   const { caption } = req.body;
   const file = req.file;
-  console.log(file);
+  // console.log(file);
 
   const uploadFile = await client.files.upload({
-    file: await toFile(Buffer.from(file.buffer), "file"),
-    fileName: "test",
+    file: await toFile(Buffer.from(file.buffer), file.originalname),
+    fileName: file.originalname,
     folderName: "instagram_2.0/",
   });
-  console.log(uploadFile);
+  // console.log(uploadFile);
 
   const post = await postModle.create({
     caption,
     url: uploadFile.url,
     user: req.user.id,
+    filetype: file.mimetype,
   });
 
   return res.status(201).json({
@@ -68,12 +70,22 @@ async function getPostDetails(req, res) {
 }
 
 async function getFeedController(req, res) {
+  const username = req.user.username;
 
-  const id = req.user.id
+  const posts = await Promise.all(
+    (await postModle.find().populate("user").lean()).map(async (post) => {
+      const isLiked = await likeModel.findOne({
+        user: username,
+        post: post._id,
+      });
 
-  const posts = await postModle.find().populate("user");
+      post.isLiked = Boolean(isLiked);
+
+      return post;
+    }),
+  );
+
   // console.log(posts);
-  
 
   if (!posts) {
     return res.status(404).json({
@@ -91,5 +103,5 @@ module.exports = {
   createPostController,
   getAllPostsController,
   getPostDetails,
-  getFeedController
+  getFeedController,
 };

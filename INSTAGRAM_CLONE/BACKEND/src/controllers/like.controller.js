@@ -2,7 +2,7 @@ const likeModel = require("../models/like.model");
 const postModel = require("../models/post.model");
 
 async function likePostController(req, res) {
-  const userId = req.user.id;
+  const username = req.user.username;
   const { postId } = req.params;
 
   //   console.log(userId, "user id");
@@ -17,7 +17,7 @@ async function likePostController(req, res) {
   }
 
   const isAlreadyLiked = await likeModel.findOne({
-    user: userId,
+    user: username,
     post: postId,
   });
 
@@ -29,7 +29,7 @@ async function likePostController(req, res) {
 
   const like = await likeModel.create({
     post: postId,
-    user: userId,
+    user: username,
   });
 
   return res.status(201).json({
@@ -39,8 +39,10 @@ async function likePostController(req, res) {
 }
 
 async function removePostLikeController(req, res) {
-  const userId = req.user.id;
+  const username = req.user.id;
   const { postId } = req.params;
+
+  console.log(username, postId);
 
   const post = await postModel.findById(postId);
   if (!post) {
@@ -50,7 +52,7 @@ async function removePostLikeController(req, res) {
   }
 
   const isPostLiked = await likeModel.findOne({
-    user: userId,
+    user: username,
     post: postId,
   });
 
@@ -61,7 +63,7 @@ async function removePostLikeController(req, res) {
   }
 
   await likeModel.findOneAndDelete({
-    user: userId,
+    user: username,
     post: postId,
   });
 

@@ -1,0 +1,45 @@
+main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+//   background-color: red;
+
+  .form_container {
+    // height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    border: 1px solid #fef1e1;
+    padding: 0.75rem;
+    border-radius: 10px;
+
+    form {
+        // height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      input,
+      label,
+      button {
+        background-color: #fef1e1;
+        color: #06070a;
+
+        font-size: 1.5rem;
+        border-radius: 50px;
+
+        outline: none;
+        border: none;
+
+        padding-inline: 1rem;
+        padding-block: 0.75rem;
+      }
+      button {
+        background-color: #fe350b;
+      }
+    }
+  }
+}

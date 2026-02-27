@@ -17,7 +17,7 @@ const Login = () => {
       const respons = await login(username, password);
       console.log(respons);
       // console.log(navigat)
-      navigat("/")
+      navigat("/feed")
     } catch (error) {
       console.log(error);
     }

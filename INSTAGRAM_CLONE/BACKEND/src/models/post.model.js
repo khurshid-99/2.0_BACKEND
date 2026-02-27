@@ -9,6 +9,9 @@ const postSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  filetype: {
+    type: String,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
