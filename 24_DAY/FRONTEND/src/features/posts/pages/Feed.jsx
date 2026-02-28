@@ -5,7 +5,7 @@ import "./feed.scss";
 import Nav from "../shared/components/Nav";
 
 const Feed = () => {
-  const { loding, feed, handleGetFeed } = usePost();
+  const { loding, feed, handleGetFeed, handleLiked, handleUnliked } = usePost();
 
   useEffect(() => {
     handleGetFeed();
@@ -23,10 +23,16 @@ const Feed = () => {
 
   return (
     <main className="feed_page">
-      <Nav/>
+      <Nav />
       {feed.map((post) => (
         // console.log(post)
-        <Post key={post._id} user={post.user} post={post} />
+        <Post
+          key={post._id}
+          user={post.user}
+          post={post}
+          liked={handleLiked}
+          unLiked={handleUnliked}
+        />
       ))}
     </main>
   );

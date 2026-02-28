@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "./createpost.scss";
 import { usePost } from "../hooks/usePost";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 const CreatePost = () => {
   const [caption, setCaption] = useState("");
@@ -31,7 +31,7 @@ const CreatePost = () => {
   }
 
   return (
-    <main>
+    <main className="create_post_page">
       <div className="form_container">
         <h1>Create Post</h1>
         <form action="" onSubmit={handleSubmit}>
@@ -51,6 +51,7 @@ const CreatePost = () => {
           />
           <button type="submit">Post</button>
         </form>
+        <p>Back to <Link to={"/feed"} className="toggle">Feed</Link> </p>
       </div>
     </main>
   );

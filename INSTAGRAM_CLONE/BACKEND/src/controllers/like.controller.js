@@ -39,10 +39,13 @@ async function likePostController(req, res) {
 }
 
 async function removePostLikeController(req, res) {
-  const username = req.user.id;
+  const username = req.user.username;
   const { postId } = req.params;
 
-  console.log(username, postId);
+  // console.log(username, postId);
+
+  // console.log(postId);
+  
 
   const post = await postModel.findById(postId);
   if (!post) {
@@ -51,10 +54,14 @@ async function removePostLikeController(req, res) {
     });
   }
 
+  // console.log(post);
+  
   const isPostLiked = await likeModel.findOne({
-    user: username,
     post: postId,
+    user: username,
   });
+
+  console.log(isPostLiked)
 
   if (!isPostLiked) {
     return res.status(409).json({
@@ -63,8 +70,7 @@ async function removePostLikeController(req, res) {
   }
 
   await likeModel.findOneAndDelete({
-    user: username,
-    post: postId,
+    _id: isPostLiked._id,
   });
 
   return res.status(200).json({

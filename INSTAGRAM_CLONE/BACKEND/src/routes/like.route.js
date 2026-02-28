@@ -8,6 +8,6 @@ const identifyUser = require("../middlewares/auth.middleware");
 const likeRouter = express.Router();
 
 likeRouter.post("/like/:postId", identifyUser, likePostController);
-likeRouter.post("/dislike/:postId", identifyUser, removePostLikeController);
+likeRouter.post("/unlike/:postId", identifyUser, removePostLikeController);
 
 module.exports = likeRouter;

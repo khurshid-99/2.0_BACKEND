@@ -1,4 +1,4 @@
-const Post = ({ user, post }) => {
+const Post = ({ user, post, liked, unLiked }) => {
   // console.log(user.profile);
   // console.log(post);
 
@@ -19,7 +19,11 @@ const Post = ({ user, post }) => {
       </div>
       <div className="buttons">
         <div className="left">
-          <button>
+          <button
+            onClick={() => {
+              post.isLiked ? unLiked(post._id) : liked(post._id);
+            }}
+          >
             {post.isLiked ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"

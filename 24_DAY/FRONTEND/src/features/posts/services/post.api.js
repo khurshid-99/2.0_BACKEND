@@ -15,8 +15,19 @@ export const createPost = async (file, caption) => {
 
   formData.append("post", file);
   formData.append("caption", caption);
-  
+
   const respons = await api.post("/", formData);
+
+  return respons.data;
+};
+
+export const liked = async (postId) => {
+  const respons = await api.post(`/like/${postId}`);
+
+  return respons.data;
+};
+export const unLiked = async (postId) => {
+  const respons = await api.post(`/unlike/${postId}`);
 
   return respons.data;
 };

@@ -29,6 +29,6 @@ const likeRouter = require("./routes/like.route");
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/user", followRouter);
-app.use("/api/post", likeRouter);
+app.use("/api/posts", likeRouter);
 
 module.exports = app;
