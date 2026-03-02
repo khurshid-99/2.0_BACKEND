@@ -5,7 +5,15 @@ import "./feed.scss";
 import Nav from "../shared/components/Nav";
 
 const Feed = () => {
-  const { loding, feed, handleGetFeed, handleLiked, handleUnliked } = usePost();
+  const {
+    loding,
+    feed,
+    handleGetFeed,
+    handleLiked,
+    handleUnliked,
+    handleFollow,
+    handleUnfollow,
+  } = usePost();
 
   useEffect(() => {
     handleGetFeed();
@@ -32,6 +40,8 @@ const Feed = () => {
           post={post}
           liked={handleLiked}
           unLiked={handleUnliked}
+          follow={handleFollow}
+          unfollow={handleUnfollow}
         />
       ))}
     </main>

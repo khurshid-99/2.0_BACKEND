@@ -1,11 +1,29 @@
 import { useContext, useEffect } from "react";
 import { PostContext } from "../Post.Context";
-import { getFeed, createPost, liked, unLiked } from "../services/post.api";
+import {
+  getFeed,
+  createPost,
+  liked,
+  unLiked,
+  followUser,
+  unFollowUser,
+} from "../services/post.api";
 
 export const usePost = () => {
   const context = useContext(PostContext);
 
-  const { loding, setLoding, post, setPost, feed, setFeed } = context;
+  const {
+    loding,
+    setLoding,
+    post,
+    setPost,
+    feed,
+    setFeed,
+    follow,
+    setFollow,
+    unFollow,
+    setUnFollow,
+  } = context;
 
   const handleGetFeed = async () => {
     setLoding(true);
@@ -39,10 +57,11 @@ export const usePost = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      handleGetFeed();
+      await handleGetFeed();
       setLoding(false);
     }
   };
+
   const handleUnliked = async (postId) => {
     setLoding(true);
     try {
@@ -51,7 +70,31 @@ export const usePost = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      handleGetFeed();
+      await handleGetFeed();
+      setLoding(false);
+    }
+  };
+
+  const handleFollow = async (id) => {
+    setLoding(true);
+    try {
+      const data = await followUser(id);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoding(false);
+    }
+  };
+
+  const handleUnfollow = async (id) => {
+    setLoding(true);
+    try {
+      const data = await unFollowUser(id);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
       setLoding(false);
     }
   };
@@ -68,5 +111,7 @@ export const usePost = () => {
     handleCreatePost,
     handleLiked,
     handleUnliked,
+    handleFollow,
+    handleUnfollow,
   };
 };

@@ -1,14 +1,23 @@
-const Post = ({ user, post, liked, unLiked }) => {
-  // console.log(user.profile);
-  // console.log(post);
+const Post = ({ user, post, liked, unLiked, follow, unfollow }) => {
+  console.log(user);
+  console.log(post);
+
+  // console.log(follow)
 
   return (
     <div className="post">
       <div className="profile">
-        <div className="profile_wraper">
-          <img src={user.profile} alt="" />
+        <div className="left">
+          <div className="profile_wraper">
+            <img src={user.profile} alt="" />
+          </div>
+          <h4>{user.username}</h4>
         </div>
-        <h4>{user.username}</h4>
+        <div className="right">
+          <button onClick={() => follow(user._id)}>
+            {follow ? <span>unfollow</span> : <span>following</span>}
+          </button>
+        </div>
       </div>
       <div className="post_img">
         {post.filetype === "image/jpeg" ? (

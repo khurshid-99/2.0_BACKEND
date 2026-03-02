@@ -4,7 +4,6 @@
   min-height: 100vh;
 
   display: flex;
-  //   justify-content: center;
   align-items: center;
   flex-direction: column;
 
@@ -12,7 +11,6 @@
 
   .post {
     width: 35rem;
-    // background-color: ;
     height: fit-content;
     border: 1px solid #fef1e1;
     border-radius: 10px;
@@ -24,28 +22,12 @@
 
     gap: 1rem;
 
-    .profile_wraper {
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid rgba(255, 0, 0, 0);
-      background: conic-gradient(
-          from 45deg,
-          pink,
-          rgb(183, 7, 223),
-          rgb(255, 187, 123),
-          rgba(255, 65, 96, 0.959),
-          pink
-        )
-        border-box;
-    }
-
     .profile {
       display: flex;
       align-items: center;
+      justify-content: space-between;
 
-      padding-inline: 0.25rem;
+      padding-inline: 0.75rem;
 
       gap: 1rem;
       img {
@@ -59,6 +41,50 @@
 
       h4 {
         font-size: 1.5rem;
+      }
+
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        .profile_wraper {
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid rgba(255, 0, 0, 0);
+          background: conic-gradient(
+              from 45deg,
+              pink,
+              rgb(183, 7, 223),
+              rgb(255, 187, 123),
+              rgba(255, 65, 96, 0.959),
+              pink
+            )
+            border-box;
+
+          cursor: pointer;
+        }
+      }
+      .right {
+        button {
+          background-color: #c30010;
+          color: #ffcbd1;
+
+          border: none;
+          border-radius: 50px;
+
+          padding-inline: 2rem;
+          padding-block: 0.75rem;
+
+          font-size: 1.5rem;
+
+          cursor: pointer;
+
+          &:active {
+            transform: scale(0.99);
+          }
+        }
       }
     }
 

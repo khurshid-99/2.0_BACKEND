@@ -4,16 +4,16 @@ const {
   followUserController,
   unfollowUserController,
   followStatusController,
+  checkFollowStatus,
 } = require("../controllers/follow.controller");
 
 const followRouter = express.Router();
 
-followRouter.post("/follow/:username", identifyUser, followUserController);
-followRouter.post("/unfollow/:username", identifyUser, unfollowUserController);
-followRouter.patch(
-  "/follow/:username",
-  identifyUser,
-  followStatusController,
-);
+followRouter.post("/follow/:id", identifyUser, followUserController);
+followRouter.post("/unfollow/:id", identifyUser, unfollowUserController);
+followRouter.patch("/follow/:username", identifyUser, followStatusController);
+
+followRouter.get("/following/:id", identifyUser, checkFollowStatus)
+// followRouter.get("/followers", identifyUser, getFollowers)
 
 module.exports = followRouter;
