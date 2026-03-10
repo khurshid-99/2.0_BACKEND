@@ -7,6 +7,7 @@ import {
   unLiked,
   followUser,
   unFollowUser,
+  checkFollowStatus,
 } from "../services/post.api";
 
 export const usePost = () => {
@@ -83,6 +84,7 @@ export const usePost = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      await handleGetFeed();
       setLoding(false);
     }
   };
@@ -92,6 +94,19 @@ export const usePost = () => {
     try {
       const data = await unFollowUser(id);
       console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      await handleGetFeed();
+      setLoding(false);
+    }
+  };
+
+  const followingUser = async (id) => {
+    setLoding(true);
+    try {
+      const respons = await checkFollowStatus(id);
+      console.log(respons);
     } catch (error) {
       console.log(error);
     } finally {
@@ -113,5 +128,6 @@ export const usePost = () => {
     handleUnliked,
     handleFollow,
     handleUnfollow,
+    followingUser,
   };
 };

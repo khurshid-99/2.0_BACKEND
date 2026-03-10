@@ -2,6 +2,7 @@ const postModle = require("../models/post.model");
 const ImageKit = require("@imagekit/nodejs");
 const { toFile } = require("@imagekit/nodejs");
 const likeModel = require("../models/like.model");
+const followModel = require("../models/follow.model");
 
 const client = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -71,30 +72,40 @@ async function getPostDetails(req, res) {
 
 async function getFeedController(req, res) {
   const username = req.user.username;
+  const userId = req.user.id;
 
   const posts = await Promise.all(
-    (await postModle.find({}).sort({_id: -1}).populate("user").lean()).map(async (post) => {
-      const isLiked = await likeModel.findOne({
-        user: username,
-        post: post._id,
-      });
+    (await postModle.find({}).sort({ _id: -1 }).populate("user").lean()).map(
+      async (post) => {
+        // 🔹 Check if liked
+        const isLiked = await likeModel.findOne({
+          user: username,
+          post: post._id,
+        });
 
-      post.isLiked = Boolean(isLiked);
+        post.isLiked = Boolean(isLiked);
 
-      return post;
-    }),
+        // 🔹 Check if following
+        const isFollowing = await followModel.exists({
+          follower: userId,
+          followee: post.user._id,
+        });
+
+        post.isFollowing = Boolean(isFollowing);
+
+        return post;
+      },
+    ),
   );
 
-  // console.log(posts);
-
-  if (!posts) {
+  if (!posts.length) {
     return res.status(404).json({
       message: "Posts not found",
     });
   }
 
   res.status(200).json({
-    message: "Posts feathed successfully",
+    message: "Posts fetched successfully",
     posts,
   });
 }

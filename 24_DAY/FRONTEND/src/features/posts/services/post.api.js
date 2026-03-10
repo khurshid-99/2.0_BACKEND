@@ -44,3 +44,9 @@ export const unFollowUser = async (id) => {
 
   return respons.data;
 };
+
+export const checkFollowStatus = async (id) => {
+  const respons = await api.get(`/user/following/${id}`)
+
+  return respons.data
+}

@@ -1,8 +1,24 @@
-const Post = ({ user, post, liked, unLiked, follow, unfollow }) => {
-  console.log(user);
+import { useEffect } from "react";
+
+const Post = ({
+  user,
+  post,
+  liked,
+  unLiked,
+  followHandle,
+  unfollowHandle,
+  follow,
+  followingUser,
+}) => {
+  // console.log(user);
   console.log(post);
+  // console.log(followingUser);
 
   // console.log(follow)
+
+  useEffect(() => {
+    // followingUser(user._id);
+  }, []);
 
   return (
     <div className="post">
@@ -14,8 +30,18 @@ const Post = ({ user, post, liked, unLiked, follow, unfollow }) => {
           <h4>{user.username}</h4>
         </div>
         <div className="right">
-          <button onClick={() => follow(user._id)}>
-            {follow ? <span>unfollow</span> : <span>following</span>}
+          {
+            // followingUser(user._id)
+          }
+          <button
+            onClick={() =>
+              post.isFollowing
+                ? unfollowHandle(user._id)
+                : followHandle(user._id)
+            }
+          >
+            <span>{post.isFollowing? "following":"follow"}</span>
+            
           </button>
         </div>
       </div>
