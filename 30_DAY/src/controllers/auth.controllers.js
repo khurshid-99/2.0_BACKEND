@@ -54,34 +54,8 @@ export async function registerController(req, res, next) {
  */
 
 export async function registerController(req, res, next) {
-  try {
-    throw new Error("User not defined.");
-  } catch (error) {
-    error.status = 500;
-    next(error);
-  }
+  res.status(201).json({
+    message: "User register successfully",
+  });
 }
 
-/**
-
-
-
-*/
-
-/**
-
-
-
-*/
-
-/**
-
-
-
-*/
-
-/**
-
-
-
-*/
