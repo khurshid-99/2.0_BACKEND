@@ -1,7 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import { Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 const Register = () => {
+  const { handleRegister } = useAuth();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const payload = {
+      username,
+      email,
+      password,
+    };
+
+    await handleRegister(payload);
+    console.log("payload data: ", payload);
+  }
+
   return (
     <section className="min-h-screen max-w-screen-2xl mx-auto px-4 py-10 text-zinc-100 sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-[85vh] w-full max-w-5xl items-center justify-center">
@@ -11,7 +32,7 @@ const Register = () => {
             Register with your username, email, and password.
           </p>
 
-          <form onSubmit={""} className="mt-8 space-y-5">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
               <label
                 htmlFor="username"
@@ -22,8 +43,8 @@ const Register = () => {
               <input
                 id="username"
                 type="text"
-                // value={username}
-                // onChange={(event) => setUsername(event.target.value)}
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
                 placeholder="Choose a username"
                 required
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-950/80 px-4 py-3 text-zinc-100 outline-none ring-0 transition focus:border-[#8323ff] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.25)]"
@@ -40,8 +61,8 @@ const Register = () => {
               <input
                 id="email"
                 type="email"
-                // value={email}
-                // onChange={(event) => setEmail(event.target.value)}
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="you@example.com"
                 required
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-950/80 px-4 py-3 text-zinc-100 outline-none ring-0 transition focus:border-[#8323ff] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.25)]"
@@ -58,8 +79,8 @@ const Register = () => {
               <input
                 id="password"
                 type="password"
-                // value={password}
-                // onChange={(event) => setPassword(event.target.value)}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 placeholder="Create a password"
                 required
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-950/80 px-4 py-3 text-zinc-100 outline-none ring-0 transition focus:border-[#8323ff] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.25)]"
