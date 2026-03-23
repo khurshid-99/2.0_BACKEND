@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
+import { useSelector } from "react-redux";
 
 const Register = () => {
   const { handleRegister } = useAuth();
@@ -9,6 +10,8 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { loading } = useSelector((state) => state.auth);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,6 +24,12 @@ const Register = () => {
 
     await handleRegister(payload);
     console.log("payload data: ", payload);
+
+    if (loading) {
+      return <h1>Loading...</h1>;
+    }
+
+    return <Navigate to={"/login"} />;
   }
 
   return (
