@@ -26,7 +26,7 @@ export async function sendMessage(req, res) {
     role: "user",
   });
 
-  const messages = await messageModel.find({ chat: chatId });
+  const messages = await messageModel.find({ chat: chatId || chat._id });
 
   console.log(messages);
 
@@ -80,5 +80,29 @@ export async function getMessages(req, res) {
   return res.status(200).json({
     message: "Messages retrieved successfully.",
     messages,
+  });
+}
+
+export async function deleteChat(req, res) {
+  const { id } = req.user;
+  const { chatId } = req.params;
+
+  const chat = await chatModel.findOneAndDelete({
+    user: id,
+    _id: chatId,
+  });
+
+  const message = await messageModel.deleteMany({
+    chat: chat._id,
+  });
+
+  if (!chat) {
+    return res.status(404).json({
+      message: "Chat not founde.",
+    });
+  }
+
+  return res.status(200).json({
+    message: "Chat deleted successfully.",
   });
 }
