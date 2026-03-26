@@ -14,17 +14,17 @@ const chatSlice = createSlice({
       state.chats[(title, chatId)] = {
         id: chatId,
         title,
-        message: [],
+        messages: [],
         lastUpdate: new Date().toISOString(),
       };
     },
     addNewMessage: (state, action) => {
       const { chatId, content, role } = action.payload;
-      state.chats[chatId].message.push({ content, role });
+      state.chats[chatId].messages.push({ content, role });
     },
     addMessage: (state, action) => {
-      const { chatId, content, role } = action.payload;
-      state.chats[chatId].message.push({ content, role });
+      const { chatId, messages } = action.payload;
+      state.chats[chatId].messages.push(...messages);
     },
 
     setChats: (state, action) => {

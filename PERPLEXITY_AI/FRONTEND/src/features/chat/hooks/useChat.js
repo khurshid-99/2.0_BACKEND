@@ -45,7 +45,7 @@ export function useChat() {
       dispatch(
         addNewMessage({
           chatId: chatId || chat._id,
-          content: message,
+          content: aiMessage.content,
           role: aiMessage.role,
         }),
       );
@@ -65,11 +65,11 @@ export function useChat() {
       const { chats } = data;
       dispatch(
         setChats(
-          chats.reducer((acc, chat) => {
+          chats.reduce((acc, chat) => {
             acc[chat._id] = {
               id: chat._id,
               title: chat.title,
-              message: [],
+              messages: [],
               updatedAt: chat.updatedAt,
             };
             return acc;
@@ -83,14 +83,15 @@ export function useChat() {
     }
   }
 
-  async function handleGetMessages(chatId, chat) {
+  async function handleGetMessages(chatId, chats) {
+    // console.log(chats[chatId]?.messages.length);
     try {
       dispatch(setLoading(true));
-
-      if (chat[chatId]?.message.length === 0) {
+      if (chats[chatId]?.messages.length === 0) {
         const data = await getMessages(chatId);
 
         const { messages } = data;
+        // console.log(messages);
 
         const formattedMessages = messages.map((msg) => ({
           content: msg.content,
