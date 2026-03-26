@@ -58,6 +58,31 @@ export function useChat() {
     }
   }
 
+  async function handleGetChat() {
+    try {
+      dispatch(setLoading(true));
+      const data = await getChats();
+      const { chats } = data;
+      dispatch(
+        setChats(
+          chats.reducer((acc, chat) => {
+            acc[chat._id] = {
+              id: chat._id,
+              title: chat.title,
+              message: [],
+              updatedAt: chat.updatedAt,
+            };
+            return acc;
+          }, {}),
+        ),
+      );
+    } catch (error) {
+      dispatch(setError(error));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
   return {
     initializeSocketConnection,
   };
