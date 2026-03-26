@@ -19,7 +19,7 @@ export async function getChats() {
   return respons.data;
 }
 
-export async function getMessages({ chatId }) {
+export async function getMessages(chatId ) {
   const respons = await api.get(`/chats/${chatId}/messages`);
 
   return respons.data;

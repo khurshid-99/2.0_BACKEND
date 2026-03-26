@@ -83,7 +83,40 @@ export function useChat() {
     }
   }
 
+  async function handleGetMessages(chatId, chat) {
+    try {
+      dispatch(setLoading(true));
+
+      if (chat[chatId]?.message.length === 0) {
+        const data = await getMessages(chatId);
+
+        const { messages } = data;
+
+        const formattedMessages = messages.map((msg) => ({
+          content: msg.content,
+          role: msg.role,
+        }));
+
+        dispatch(
+          addMessage({
+            chatId,
+            messages: formattedMessages,
+          }),
+        );
+      }
+
+      dispatch(setCurrentChatId(chatId));
+    } catch (error) {
+      dispatch(error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
   return {
     initializeSocketConnection,
+    handleSendMessage,
+    handleGetChat,
+    handleGetMessages,
   };
 }
