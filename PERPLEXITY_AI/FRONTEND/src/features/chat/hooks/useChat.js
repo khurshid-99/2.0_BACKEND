@@ -24,7 +24,9 @@ export function useChat() {
       dispatch(setLoading(true));
 
       const data = await sendMessage({ message, chatId });
+      console.log(chatId);
       const { chat, aiMessage } = data;
+      console.log(data);
       if (!chatId) {
         dispatch(
           createNewChat({

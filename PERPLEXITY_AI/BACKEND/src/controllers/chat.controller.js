@@ -39,11 +39,9 @@ export async function sendMessage(req, res) {
   });
 
   res.status(201).json({
-    aiTitle: chatTitle,
-    aiMessage: chatResopns,
+    title: chatTitle,
     chat,
     aiMessage,
-    userMessage,
   });
 }
 

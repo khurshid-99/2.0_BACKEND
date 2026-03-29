@@ -11,8 +11,6 @@ const Dashbord = () => {
 
   const { chats, currentChatId, loading } = useSelector((state) => state.chat);
 
-  // console.log(chats);
-
   useEffect(() => {
     chat.initializeSocketConnection();
     chat.handleGetChat();
@@ -23,29 +21,17 @@ const Dashbord = () => {
     inputRef.current.style.height = inputRef.current.scrollHeight + "px";
   };
 
-  // const handleSubmitMessage = async (e) => {
-  //   e.preventDefault();
-
-  //   const messageValue = inputRef.current.value;
-
-  //   if (!messageValue.trim()) return;
-
-  //   await chat.handleSendMessage({
-  //     message: messageValue,
-  //     chatId: currentChatId,
-  //   });
-
-  //   inputRef.current.value = "";
-  //   inputRef.current.style.height = "auto";
-  // };
-
-  const handleSubmitMessage = async (e) => {
+  const handleSubmitMessage = (e) => {
     e.preventDefault();
 
-    if (!inputText.trim()) return;
+    const trimMessage = inputText.trim();
 
-    await chat.handleSendMessage({
-      message: inputText,
+    if (!trimMessage) return;
+
+    console.log(currentChatId);
+
+    chat.handleSendMessage({
+      message: trimMessage,
       chatId: currentChatId,
     });
 
@@ -59,14 +45,20 @@ const Dashbord = () => {
     // console.log(currentChatId);
   };
 
+  if (loading) {
+    console.log("true: Loading");
+  } else if (!loading) {
+    chats[currentChatId]?.messages.map((chat) => console.log(chat));
+  }
+
+  console.log(chats);
+
   return (
     <main className="w-full h-screen flex">
       <aside className="h-screen hidden lg:inline-block w-[clamp(20rem,20vw,40rem)] bg-[#1E1F20] px-4 py-4 overflow-hidden ">
         <h1 className="text-center text-[2rem]">AI</h1>
         <div className="flex flex-col  gap-y-[1rem] h-screen overflow-y-auto ">
-          {loading ? (
-            <h1>Loading...</h1>
-          ) : chats ? (
+          {chats ? (
             Object.values(chats).map((chat, index) => (
               <h2
                 key={index}
@@ -90,7 +82,9 @@ const Dashbord = () => {
           <div className="w-[40vw] pb-[20rem] mx-auto overflow-y-auto  ">
             <div className="messages flex-1 space-y-3 overflow-y-auto pr-1 pb-30">
               {loading ? (
-                <h1>Loading</h1>
+                <div className="w-full h-screen flex items-center justify-center">
+                  <h1 className="text-center ">Loading...</h1>
+                </div>
               ) : (
                 chats[currentChatId]?.messages.map((message) => (
                   <div
@@ -145,19 +139,25 @@ const Dashbord = () => {
             <div className="w-[40vw] fixed bottom-20 mx-auto ">
               <form
                 onSubmit={handleSubmitMessage}
-                className="w-full h-fit bg-[#1E1F20] px-4 py-4 rounded 
+                className="w-full h-fit bg-[#1E1F20] px-4 py-4 rounded flex justify-between items-end 
                "
               >
                 <textarea
                   ref={inputRef}
                   onInput={handleInput}
                   value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
+                  onChange={(e) => {
+                    setInputText(e.target.value);
+                  }}
                   placeholder="Ask Me..."
                   className="border-none outline-none text-white w-full resize-none overflow-hidden"
                   rows={1}
                 />
-                <button type="submit" disabled={!inputText.trim()}>
+                <button
+                  type="submit"
+                  disabled={!inputText.trim()}
+                  className="px-8 py-2 rounded-full bg-[white] text-[black] text-[1.2rem] font-semibold "
+                >
                   Send
                 </button>
               </form>

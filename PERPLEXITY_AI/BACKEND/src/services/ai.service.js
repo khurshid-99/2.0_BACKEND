@@ -1,10 +1,19 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatMistralAI } from "@langchain/mistralai";
-import { AIMessage, HumanMessage, SystemMessage } from "langchain";
+import {
+  AIMessage,
+  createAgent,
+  HumanMessage,
+  SystemMessage,
+  tool,
+} from "langchain";
+import { searchInternate } from "./tavilyInternetSearch.service.js";
+import * as z from "zod";
 
 const geminiModel = new ChatGoogleGenerativeAI({
-  model: "gemini-2.5-flash-lite",
+  model: "gemini-2.5-pro",
   apiKey: process.env.GEMINI_API_KEY,
+
 });
 
 const mistralModel = new ChatMistralAI({
@@ -12,18 +21,40 @@ const mistralModel = new ChatMistralAI({
   apiKey: process.env.MISTRAL_API_KEY,
 });
 
-export async function generatRespons(messages) {
-  const respons = await geminiModel.invoke(
-    messages.map((msg) => {
-      if (msg.role == "user") {
-        return new HumanMessage(msg.content);
-      } else if (msg.role == "ai") {
-        return new AIMessage(msg.content);
-      }
-    }),
-  );
+const searchInternateTool = tool(searchInternate, {
+  name: "searchInternet",
+  description: "Use this tool to get the latest information form the internet.",
+  schema: z.object({
+    query: z.string().describe("The search query look up on the internet."),
+  }),
+});
 
-  return respons.text;
+const geminiAgent = createAgent({
+  model: mistralModel,
+  tools: [searchInternateTool],
+});
+
+export async function generatRespons(messages) {
+  const respons = await geminiAgent.invoke({
+    messages: [
+      new SystemMessage(
+        `
+        You are a helpful and precise assistant for answering questions.
+        If you don't know the answer, say you don't know. 
+        If the question requires up-to-date information, use the "searchInternet" tool to get the latest information from the internet and then answer based on the search results.
+        `,
+      ),
+      ...messages.map((msg) => {
+        if (msg.role == "user") {
+          return new HumanMessage(msg.content);
+        } else if (msg.role == "ai") {
+          return new AIMessage(msg.content);
+        }
+      }),
+    ],
+  });
+
+  return respons.messages[respons.messages.length - 1].text;
 }
 
 export async function generatTitle(message) {
