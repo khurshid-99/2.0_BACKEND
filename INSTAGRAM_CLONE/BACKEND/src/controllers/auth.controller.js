@@ -51,9 +51,11 @@ async function registreController(req, res) {
 async function loginController(req, res) {
   const { username, email, password } = req.body;
 
-  const user = await userModel.findOne({
-    $or: [{ username }, { email }],
-  }).select("+password");
+  const user = await userModel
+    .findOne({
+      $or: [{ username }, { email }],
+    })
+    .select("+password");
 
   if (!user) {
     return res.status(401).json({
@@ -101,7 +103,7 @@ async function getMeController(req, res) {
     });
   }
 
-  const user = await userModel.findOne({username});
+  const user = await userModel.findOne({ username });
 
   if (!user) {
     return res.status(404).json({

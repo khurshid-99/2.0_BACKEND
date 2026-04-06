@@ -23,13 +23,20 @@ export const useAuth = () => {
 
   const register = async (username, email, password) => {
     setLoding(true);
+
     try {
+
       const respons = await handleRegister(username, email, password);
       return setUser(respons.user);
+
     } catch (error) {
+
       console.log(error);
+
     } finally {
+
       setLoding(false);
+
     }
   };
 
