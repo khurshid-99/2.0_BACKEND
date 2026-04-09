@@ -1,4 +1,5 @@
 import express from "express";
+import useGraph from "./services/grap.ai.service.js";
 
 const app = express();
 
@@ -9,5 +10,12 @@ app.get("/health", (req, res) => {
   });
 });
 
+app.post("/use-graph", async (req, res) => {
+  const data = await useGraph(`What is the captial of India?`);
 
-export default app
+  return res.status(200).json({
+    data: data
+  })
+});
+
+export default app;
