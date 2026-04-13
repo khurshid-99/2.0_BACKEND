@@ -21,13 +21,15 @@ async function sendTokenRespons(user, res, message) {
       fullname: user.fullname,
       email: user.email,
       contact: user.contact,
-      role : user.role
+      role: user.role,
     },
   });
 }
 
 export async function registerController(req, res) {
-  const { email, contact, password, fullname, role } = req.body;
+  const { email, contact, password, fullname, isSeller } = req.body;
+
+  console.log(email, contact, password, fullname, isSeller )
 
   try {
     const existingUser = await UserModel.findOne({
@@ -45,7 +47,7 @@ export async function registerController(req, res) {
       contact,
       password,
       fullname,
-      role,
+      role: isSeller ? "seller" : "buyer",
     });
 
     sendTokenRespons(User, res, "User Register Successfully");
