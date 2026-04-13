@@ -21,6 +21,7 @@ async function sendTokenRespons(user, res, message) {
       fullname: user.fullname,
       email: user.email,
       contact: user.contact,
+      role : user.role
     },
   });
 }
@@ -50,6 +51,37 @@ export async function registerController(req, res) {
     sendTokenRespons(User, res, "User Register Successfully");
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+}
+
+export async function loginController(req, res) {
+  const { email, contact, password } = req.body;
+
+  try {
+    const User = await UserModel.findOne({
+      $or: [{ email }, { contact }],
+    });
+
+    if (!User) {
+      return res.status(404).json({
+        message: "User not found!",
+      });
+    }
+
+    const isMatch = await User.comparePassword(password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid credentials email or password",
+      });
+    }
+
+    sendTokenRespons(User, res, "User logged in successfully.");
+  } catch (error) {
+    console.log(error + "login controller!");
     return res.status(500).json({
       message: "Server error",
     });
