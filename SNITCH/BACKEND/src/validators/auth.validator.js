@@ -1,17 +1,17 @@
 import { body, validationResult } from "express-validator";
 
 async function validationRequest(req, res, next) {
-  const error = validationResult(req);
+  const errors = validationResult(req);
 
-  if (!error.notEmpty()) {
-    return res.status(400).json({ error: error.array() });
-  }
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
   next();
 }
 
 export const validatRegisterUser = [
-  body("emali").isEmail().withMessage("Invalid email format"),
+  body("email").isEmail().withMessage("Invalid email format"),
   body("contact")
     .notEmpty()
     .withMessage("Contact is required")
@@ -25,9 +25,9 @@ export const validatRegisterUser = [
     .withMessage("Full name is required")
     .isLength({ min: 3 })
     .withMessage("Full Name must be at least 3 characters long"),
-  body("isSeller")
-    .isBoolean()
-    .withMessage("isSeller must be be a boolean value"),
+  // body("isSeller")
+  //   .isBoolean()
+  //   .withMessage("isSeller must be be a boolean value"),
 
   validationRequest,
 ];
