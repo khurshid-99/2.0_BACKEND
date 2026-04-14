@@ -47,7 +47,6 @@ const Register = () => {
   }
 
   if (!loading && user) {
-    
     return navigate("/");
   }
 
@@ -138,6 +137,8 @@ const Register = () => {
               Seller Role
             </label>
           </div>
+
+          <a href="/api/auth/google">Continue with Google</a>
 
           {/* Submit */}
           <button type="submit" className="bg-amber-500 rounded py-1 ">

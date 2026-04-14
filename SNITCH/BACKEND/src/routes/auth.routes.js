@@ -1,10 +1,29 @@
-import {Router} from "express"
-import { validatLoginUser, validatRegisterUser } from "../validators/auth.validator.js";
-import { loginController, registerController } from "../controllers/auth.controller.js";
+import { Router } from "express";
+import {
+  validatLoginUser,
+  validatRegisterUser,
+} from "../validators/auth.validator.js";
+import {
+  googleCallback,
+  loginController,
+  registerController,
+} from "../controllers/auth.controller.js";
+import passport from "passport";
 
 const authRouter = Router();
 
-authRouter.post("/register", validatRegisterUser, registerController );
-authRouter.post("/login",validatLoginUser, loginController)
+authRouter.post("/register", validatRegisterUser, registerController);
+authRouter.post("/login", validatLoginUser, loginController);
+authRouter.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] }),
+);
+authRouter.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    session: false,
+  }),
+  googleCallback,
+);
 
 export default authRouter;

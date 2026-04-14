@@ -29,7 +29,7 @@ async function sendTokenRespons(user, res, message) {
 export async function registerController(req, res) {
   const { email, contact, password, fullname, isSeller } = req.body;
 
-  console.log(email, contact, password, fullname, isSeller )
+  console.log(email, contact, password, fullname, isSeller);
 
   try {
     const existingUser = await UserModel.findOne({
@@ -88,4 +88,10 @@ export async function loginController(req, res) {
       message: "Server error",
     });
   }
+}
+
+export async function googleCallback(req, res) {
+  console.log(req.user);
+
+   res.redirect("http://localhost:5173/");
 }
