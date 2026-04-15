@@ -19,11 +19,16 @@ if (!process.env.GOOGLE_CLIENT_SECRET) {
   );
 }
 
+if (!process.env.NODE_ENV) {
+  throw new Error(`NODE_ENV is not defind in environment variables`);
+}
+
 const config = {
   MONGO_URI: process.env.MONGO_URI,
   JWT_SECRET: process.env.JWT_SECRET,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  NODE_ENV: process.env.NODE_ENV,
 };
 
 export default config;

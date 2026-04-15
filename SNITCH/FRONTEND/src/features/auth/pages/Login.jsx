@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/auth.hook";
 import { useSelector } from "react-redux";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ const Login = () => {
             Submit
           </button>
         </form>
+        <ContinueWithGoogle/>
       </div>
     </div>
   );

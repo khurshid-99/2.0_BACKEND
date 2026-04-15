@@ -92,6 +92,35 @@ export async function loginController(req, res) {
 
 export async function googleCallback(req, res) {
   console.log(req.user);
+  const { id, displayName, emails, photos } = req.user;
+  const email = emails[0].value;
+  const profilePhoto = photos[0].value;
 
-   res.redirect("http://localhost:5173/");
+  try {
+    let user = await UserModel.findOne({ email });
+
+    if (!user) {
+      user = await UserModel.create({
+        email: email,
+        fullname: displayName,
+        googleId: id,
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      config.JWT_SECRET,
+      { expiresIn: "7d" },
+    );
+
+    res.cookie("token", token);
+
+    res.redirect(
+      config.NODE_ENV === "development" ? "http://localhost:5173/" : "/",
+    );
+  } catch (error) {
+    console.log(`Server error googleCallback : ${error}`);
+  }
 }

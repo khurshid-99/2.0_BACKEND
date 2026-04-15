@@ -5,7 +5,11 @@ import Login from "../features/auth/pages/Login";
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <h1>Hello</h1>,
+    element: (
+      <h1>
+        Hello <br /> This is Home page!
+      </h1>
+    ),
   },
   {
     path: "/register",
@@ -13,6 +17,6 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />
-  }
+    element: <Login />,
+  },
 ]);

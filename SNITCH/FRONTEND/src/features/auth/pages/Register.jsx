@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../hooks/auth.hook";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -138,13 +139,12 @@ const Register = () => {
             </label>
           </div>
 
-          <a href="/api/auth/google">Continue with Google</a>
-
           {/* Submit */}
           <button type="submit" className="bg-amber-500 rounded py-1 ">
             Submit
           </button>
         </form>
+        <ContinueWi      thGoogle />
       </div>
     </div>
   );
