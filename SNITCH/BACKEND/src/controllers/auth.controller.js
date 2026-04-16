@@ -13,6 +13,8 @@ async function sendTokenRespons(user, res, message) {
 
   res.cookie("token", token);
 
+  console.log(user);
+
   return res.status(201).json({
     message,
     success: true,
@@ -62,18 +64,19 @@ export async function registerController(req, res) {
 export async function loginController(req, res) {
   const { email, contact, password } = req.body;
 
+  // console.log(email, password)
   try {
-    const User = await UserModel.findOne({
-      $or: [{ email }, { contact }],
+    const user = await UserModel.findOne({
+      $or: [{ email }],
     });
 
-    if (!User) {
+    if (!user) {
       return res.status(404).json({
         message: "User not found!",
       });
     }
 
-    const isMatch = await User.comparePassword(password);
+    const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
       return res.status(400).json({
@@ -81,17 +84,21 @@ export async function loginController(req, res) {
       });
     }
 
-    sendTokenRespons(User, res, "User logged in successfully.");
+    // console.log(user);
+
+    sendTokenRespons(user, res, "User logged in successfully.");
   } catch (error) {
     console.log(error + "login controller!");
     return res.status(500).json({
-      message: "Server error",
+      message: "Server error. Login controller",
     });
   }
 }
 
 export async function googleCallback(req, res) {
-  console.log(req.user);
+  
+  // console.log(req.user);
+
   const { id, displayName, emails, photos } = req.user;
   const email = emails[0].value;
   const profilePhoto = photos[0].value;

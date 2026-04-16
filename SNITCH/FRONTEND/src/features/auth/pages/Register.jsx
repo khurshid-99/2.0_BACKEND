@@ -144,7 +144,7 @@ const Register = () => {
             Submit
           </button>
         </form>
-        <ContinueWi      thGoogle />
+        <ContinueWithGoogle />
       </div>
     </div>
   );
