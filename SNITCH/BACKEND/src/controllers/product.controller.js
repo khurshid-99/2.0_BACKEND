@@ -1,4 +1,5 @@
 import ProductModel from "../models/product.model.js";
+import UserModel from "../models/user.model.js";
 import { uploadImages } from "../services/stroge.service.js";
 
 export async function createProduct(req, res) {
@@ -41,4 +42,29 @@ export async function createProduct(req, res) {
     success: true,
     product: Product,
   });
+}
+
+export async function getSellerProduct(req, res) {
+  const user = req.user;
+
+  // console.log(user.id);
+
+  try {
+    const products = await ProductModel.find({
+      seller: user.id,
+    });
+
+    // console.log(products);
+
+    return res.status(200).json({
+      message: "Get Seller Products",
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(`Get Seller Product error : ${error}`);
+    res.status(500).json({
+      message: "Server error!",
+    });
+  }
 }

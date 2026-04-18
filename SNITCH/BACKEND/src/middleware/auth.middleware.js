@@ -38,3 +38,33 @@ export async function authenticateSeller(req, res, next) {
     });
   }
 }
+
+export async function authenticateUser(req, res, next) {
+  const token = req.cookies.token;
+
+  try {
+    if (!token) {
+      return res.status(401).json({
+        message: "Authentication required, Token required",
+      });
+    }
+
+    const decoded = await jwt.verify(token, config.JWT_SECRET);
+
+    const User = await UserModel.findById(decoded.id);
+
+    if (!User) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    req.user = User;
+    next();
+  } catch (error) {
+    console.log(`AuthenticateUser Error : ${error} `);
+    return res.status(401).json({
+      message: "Invalid token or expired token",
+    });
+  }
+}

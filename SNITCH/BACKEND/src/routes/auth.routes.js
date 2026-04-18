@@ -4,12 +4,14 @@ import {
   validatRegisterUser,
 } from "../validators/auth.validator.js";
 import {
+  getMeController,
   googleCallback,
   loginController,
   registerController,
 } from "../controllers/auth.controller.js";
 import passport from "passport";
 import config from "../configs/config.js";
+import { authenticateUser } from "../middleware/auth.middleware.js";
 
 const authRouter = Router();
 
@@ -30,5 +32,7 @@ authRouter.get(
   }),
   googleCallback,
 );
+
+authRouter.get("/me", authenticateUser, getMeController);
 
 export default authRouter;

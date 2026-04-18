@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router";
 import Register from "../features/auth/pages/Register";
 import Login from "../features/auth/pages/Login";
 import CreateProduct from "../features/products/pages/CrateProduct";
+import Dashbord from "../features/products/pages/Dashbord";
+import Protected from "../features/auth/components/Protected";
 
 export const routes = createBrowserRouter([
   {
@@ -21,7 +23,24 @@ export const routes = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/product",
-    element: <CreateProduct />,
+    path: "/seller",
+    children: [
+      {
+        path: "/seller/create-product",
+        element: (
+          <Protected role="seller">
+            <CreateProduct />
+          </Protected>
+        ),
+      },
+      {
+        path: "/seller/products",
+        element: (
+          <Protected role="seller">
+            <Dashbord />,
+          </Protected>
+        ),
+      },
+    ],
   },
 ]);

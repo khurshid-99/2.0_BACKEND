@@ -9,7 +9,7 @@ const productSlice = createSlice({
   },
   reducers: {
     setSellerProducts: (state, action) => {
-      state.setSellerProducts = action.payload;
+      state.sellerProducts = action.payload;
     },
 
     setLoading: (state, action) => {

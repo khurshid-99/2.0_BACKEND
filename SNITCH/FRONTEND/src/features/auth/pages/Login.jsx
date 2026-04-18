@@ -8,7 +8,9 @@ const Login = () => {
   const navigate = useNavigate();
   const { handleLogin } = useAuth();
 
-  const { loading, errors, user } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
+  const error = useSelector((state) => state.auth.error);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -25,10 +27,20 @@ const Login = () => {
     e.preventDefault();
     console.log(formData);
 
-    await handleLogin({
-      email: formData.email,
-      password: formData.password,
-    });
+    try {
+      const loginUser = await handleLogin({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (loginUser.role === "buyer") {
+        return navigate("/");
+      } else if (loginUser.role === "seller") {
+        return navigate("/seller/products");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   if (loading) {
     return (
@@ -38,9 +50,13 @@ const Login = () => {
     );
   }
 
-  if (!loading && user) {
-    return navigate("/");
-  }
+  // if (!loading && user && user.role === "buyer") {
+  //   return navigate("/");
+  // } else if (!loading && user.role === "seller") {
+  //   return navigate("/seller/products");
+  // } else {
+  //   console.log(error);
+  // }
 
   return (
     <div className="w-full h-screen bg-black text-white flex items-center justify-center ">
@@ -89,7 +105,7 @@ const Login = () => {
             Submit
           </button>
         </form>
-        <ContinueWithGoogle/>
+        <ContinueWithGoogle />
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ async function sendTokenRespons(user, res, message) {
 
   res.cookie("token", token);
 
-  console.log(user);
+  // console.log(user);
 
   return res.status(201).json({
     message,
@@ -96,7 +96,6 @@ export async function loginController(req, res) {
 }
 
 export async function googleCallback(req, res) {
-  
   // console.log(req.user);
 
   const { id, displayName, emails, photos } = req.user;
@@ -130,4 +129,18 @@ export async function googleCallback(req, res) {
   } catch (error) {
     console.log(`Server error googleCallback : ${error}`);
   }
+}
+
+export async function getMeController(req, res) {
+  const { _id } = req.user;
+
+  const user = await UserModel.findById(_id);
+
+  if (!user) {
+    return res.status(404).json({
+      message: "Unauthorized access",
+    });
+  }
+
+  sendTokenRespons(user, res, "User logged in successfully");
 }
