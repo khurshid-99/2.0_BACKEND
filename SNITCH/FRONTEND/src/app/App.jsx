@@ -10,17 +10,13 @@ function App() {
   const { handleGetMe } = useAuth();
 
   const user = useSelector((state) => state.auth.user);
-  console.log(user)
+  console.log(user);
 
   useEffect(() => {
     handleGetMe();
   }, []);
 
-  return (
-    <>
-      <RouterProvider router={routes} />
-    </>
-  );
+  return <RouterProvider router={routes} />;
 }
 
 export default App;

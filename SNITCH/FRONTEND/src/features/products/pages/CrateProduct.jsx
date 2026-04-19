@@ -10,7 +10,7 @@ const MAX_IMAGES = 7;
 const CreateProduct = () => {
   const { handleCreateProduct } = useProduct();
   const { loading, error, sellerProducts } = useSelector(
-    (state) => state.products,
+    (state) => state.product,
   );
   const navigate = useNavigate();
 
@@ -109,25 +109,19 @@ const CreateProduct = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <main>
-        <h1>Loading...</h1>
-      </main>
-    );
-  }
+
 
   if (isSubmitting) {
     navigate("/");
     return;
   }
 
-  // console.log(images);
+  console.log(loading);
 
   return (
     <div className="min-h-screen bg-[#131313] text-[#e5e2e1] font-sans selection:bg-[#FFD700] selection:text-[#131313]">
       {/* Page shell — constrained width, centred */}
-      <div c lassName="max-w-6xl mx-auto px-6 lg:px-12">
+      <div className="max-w-6xl mx-auto px-6 lg:px-12">
         {/* Nav Brand */}
         <div className="pt-8 pb-0">
           <span className="text-[#FFD700] text-xs font-bold tracking-[0.25em] uppercase font-[Manrope,sans-serif]">

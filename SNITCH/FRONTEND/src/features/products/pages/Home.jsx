@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { useProduct } from "../hooks/product.hook";
+import { useSelector } from "react-redux";
+import { Link } from "react-router";
 
 function ProductCard({ data }) {
-  // console.log(data);
+  console.log(data);
 
   function formatPrice(value) {
     return new Intl.NumberFormat(`en`, {
@@ -21,7 +22,7 @@ function ProductCard({ data }) {
   }
 
   return (
-    <div className="bg-[#cc80ff] flex flex-col gap-2 rounded overflow-hidden ">
+    <Link to={`/product/detils/${data._id}`} className="bg-[#fafafa] flex flex-col gap-2 rounded overflow-hidden ">
       <div className="">
         <img
           src={data.images[0].url}
@@ -38,34 +39,35 @@ function ProductCard({ data }) {
           <span>{data.price.currency}</span>
         </h2>
       </div>
-    </div>
+    </Link>
   );
 }
 
-const Dashbord = () => {
-  const { handleGetSellerProducts } = useProduct();
-  const sellerProduct = useSelector((state) => state.product.sellerProducts);
+const Home = () => {
+  const { handleGetAllProducts } = useProduct();
+  const products = useSelector((state) => state.product.products);
   const loading = useSelector((state) => state.product.loading);
-  const errror = useSelector((state) => state.product.error);
 
   useEffect(() => {
-    handleGetSellerProducts();
+    handleGetAllProducts();
   }, []);
+
+  console.log(products);
 
   if (loading) {
     return (
-      <main className="w-full h-screen flex items-center justify-center ">
-        <h1 className="text-[10rem] text-[red] text-center ">Loading...</h1>
+      <main>
+        <h1>Loading...</h1>
       </main>
     );
   }
 
   return (
     <div className="w-full min-h-screen  flex flex-wrap justify-center gap-1 px-4 py-2 bg-[black] ">
-      {sellerProduct ? (
-        sellerProduct.map((item) => (
-          <div key={item._id} className="shrink-0" >
-            <ProductCard data={item} />
+      {!loading && products ? (
+        products.map((product) => (
+          <div key={product._id} className="shrink-0 ">
+            <ProductCard data={product} />
           </div>
         ))
       ) : (
@@ -75,4 +77,4 @@ const Dashbord = () => {
   );
 };
 
-export default Dashbord;
+export default Home;

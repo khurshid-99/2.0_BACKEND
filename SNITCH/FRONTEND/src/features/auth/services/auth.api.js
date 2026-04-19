@@ -31,6 +31,6 @@ export async function login({ email, password }) {
 
 export async function getMe() {
   const respons = await authApi.get("/me");
-  console.log(respons);
+  // console.log(respons);k
   return respons.data;
 }

@@ -14,3 +14,16 @@ export async function getSellerProducts() {
   // console.log(respons)
   return respons.data;
 }
+
+export async function getAllProducts() {
+  const respons = await productApi.get("/");
+
+  return respons.data;
+}
+
+export async function getProductDetils({ productId }) {
+  // console.log(productId);
+  const respons = await productApi.get(`/detils/${productId}`);
+
+  return respons.data;
+}

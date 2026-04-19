@@ -90,6 +90,8 @@ export async function getAllProductsController(req, res) {
 export async function productDetilsController(req, res) {
   const { productId } = req.params;
 
+  console.log()
+
   const product = await ProductModel.findById(productId);
 
   if (!product) {
@@ -100,6 +102,8 @@ export async function productDetilsController(req, res) {
   }
 
   return res.status(200).json({
-    message: product,
+    message: "Get Product detils",
+    success: true,
+    product
   });
 }

@@ -4,15 +4,13 @@ import Login from "../features/auth/pages/Login";
 import CreateProduct from "../features/products/pages/CrateProduct";
 import Dashbord from "../features/products/pages/Dashbord";
 import Protected from "../features/auth/components/Protected";
+import Home from "../features/products/pages/Home";
+import ProductDetils from "../features/products/pages/ProductDetils";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <h1>
-        Hello <br /> This is Home page!
-      </h1>
-    ),
+    element: <Home />,
   },
   {
     path: "/register",
@@ -37,10 +35,14 @@ export const routes = createBrowserRouter([
         path: "/seller/products",
         element: (
           <Protected role="seller">
-            <Dashbord />,
+            <Dashbord />
           </Protected>
         ),
       },
     ],
+  },
+  {
+    path: "/product/detils/:id",
+    element: <ProductDetils />,
   },
 ]);
