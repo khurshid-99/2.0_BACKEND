@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useProduct } from "../hooks/product.hook";
+import { Link } from "react-router";
 
 function ProductCard({ data }) {
   // console.log(data);
@@ -21,7 +22,10 @@ function ProductCard({ data }) {
   }
 
   return (
-    <div className="bg-[#cc80ff] flex flex-col gap-2 rounded overflow-hidden ">
+    <Link
+      to={`/seller/product/${data._id}`}
+      className="bg-[#cc80ff] flex flex-col gap-2 rounded overflow-hidden "
+    >
       <div className="">
         <img
           src={data.images[0].url}
@@ -38,7 +42,7 @@ function ProductCard({ data }) {
           <span>{data.price.currency}</span>
         </h2>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -64,7 +68,7 @@ const Dashbord = () => {
     <div className="w-full min-h-screen  flex flex-wrap justify-center gap-1 px-4 py-2 bg-[black] ">
       {sellerProduct ? (
         sellerProduct.map((item) => (
-          <div key={item._id} className="shrink-0" >
+          <div key={item._id} className="shrink-0">
             <ProductCard data={item} />
           </div>
         ))

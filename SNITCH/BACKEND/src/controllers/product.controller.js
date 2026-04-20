@@ -90,7 +90,7 @@ export async function getAllProductsController(req, res) {
 export async function productDetilsController(req, res) {
   const { productId } = req.params;
 
-  console.log()
+  console.log();
 
   const product = await ProductModel.findById(productId);
 
@@ -104,6 +104,63 @@ export async function productDetilsController(req, res) {
   return res.status(200).json({
     message: "Get Product detils",
     success: true,
-    product
+    product,
+  });
+}
+
+export async function addProductVariant(req, res) {
+  const { productId } = req.params;
+  const userId = req.user;
+
+  const { price, stock } = req.body;
+  const attributes = JSON.parse(req.body.attributes || "{}");
+  const files = req.files;
+
+  console.log(price, stock, attributes);
+
+  const product = await ProductModel.findOne({
+    _id: productId,
+    seller: userId._id,
+  });
+
+  if (!product) {
+    return res.status(404).json({
+      message: "Product Not found",
+      success: false,
+    });
+  }
+
+  const images = [];
+  if (files || files.length !== 0) {
+    (
+      await Promise.all(
+        files.map(async (file) => {
+          const image = await uploadImages({
+            buffer: file.buffer,
+            fileName: file.originalname,
+          });
+
+          return image;
+        }),
+      )
+    ).map((image) => images.push(image));
+  }
+
+  product.variants.push({
+    images,
+    price: {
+      amount: Number(price) || product.price.amount,
+      currency: product.price.currency,
+    },
+    stock,
+    attributes,
+  });
+
+  await product.save();
+
+  return res.status(200).json({
+    message: "Variant added successfully",
+    success: true,
+    product,
   });
 }

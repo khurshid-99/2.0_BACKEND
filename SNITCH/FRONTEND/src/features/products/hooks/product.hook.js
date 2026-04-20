@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import {
+  addProductVariant,
   createProduct,
   getAllProducts,
   getProductDetils,
@@ -53,14 +54,24 @@ export function useProduct() {
     }
   }
 
-  async function handleGetProductDetilsById({productId}) {
-    // console.log(productId)
+  async function handleGetProductDetilsById(productId) {
+    // console.log(productId);
     try {
-      const data = await getProductDetils({productId});
+      const data = await getProductDetils({ productId });
 
       return data.product;
     } catch (error) {
       return error;
+    }
+  }
+
+  async function handleAddProductVariant(productId, variantToSave) {
+    try {
+      const data = await addProductVariant(productId, variantToSave);
+      console.log(variantToSave)
+      return data.product;
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -69,5 +80,6 @@ export function useProduct() {
     handleGetSellerProducts,
     handleGetAllProducts,
     handleGetProductDetilsById,
+    handleAddProductVariant,
   };
 }

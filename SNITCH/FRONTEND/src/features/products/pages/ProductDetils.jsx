@@ -37,6 +37,10 @@ const ProductDetils = () => {
       setSelectedImageId(product.images[0]._id);
     }
   }, [id]);
+
+  const selectedImage = product?.images.find(
+  (img) => img._id === selectedImageId
+);
   // console.log(product)
   return (
     <div className="w-full bg-[#F9F2EE] px-4 py-2 ">

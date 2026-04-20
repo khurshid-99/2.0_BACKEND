@@ -27,3 +27,20 @@ export async function getProductDetils({ productId }) {
 
   return respons.data;
 }
+
+export async function addProductVariant(productId, variantToSave) {
+  console.log(variantToSave);
+  const formData = new FormData();
+
+  variantToSave.images.forEach((image) => {
+    formData.append("images", image.file);
+  });
+
+  formData.append("stock", variantToSave.stock);
+  formData.append("price", variantToSave.price);
+  formData.append("attributes", JSON.stringify(variantToSave.attributes));
+
+  console.log(formData)
+  const respons = await productApi.post(`/${productId}/variants`, formData);
+  return respons.data;
+}
