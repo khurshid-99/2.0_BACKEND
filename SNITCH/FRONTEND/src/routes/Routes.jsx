@@ -22,7 +22,7 @@ export const routes = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/product/detils/:id",
+    path: "/product/detils/:productId",
     element: <ProductDetils />,
   },
   {

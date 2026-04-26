@@ -1,0 +1,20 @@
+import { body, param, validationResult } from "express-validator";
+
+const validateRequiest = (req, res, next) => {
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    return res.status(400).json({ error: error.array() });
+  }
+  next();
+};
+
+export const validateAddToCart = [
+  param("productId").isMongoId().withMessage("Invalid product ID"),
+  param("variantId").optional().isMongoId().withMessage("Invalid variant ID"),
+  body("quantity")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Quantity must be at least 1"),
+  validateRequiest,
+];
