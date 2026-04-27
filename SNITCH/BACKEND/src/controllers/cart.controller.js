@@ -7,6 +7,7 @@ export async function addToCart(req, res) {
   const { quantity = 1 } = req.body;
   const user = req.user;
 
+  console.log(quantity);
   const product = await ProductModel.findOne({
     _id: productId,
     "variants._id": variantId,
@@ -37,8 +38,7 @@ export async function addToCart(req, res) {
     const quantityInCart = cart.items.find(
       (item) =>
         item.product.toString() === productId &&
-        item.variant?.toString() === variantId.quantity,
-    ).quantity;
+        item.variant?.toString() === variantId).quantity;
 
     if (quantityInCart + quantity > stock) {
       return res.status(400).json({
@@ -78,8 +78,24 @@ export async function addToCart(req, res) {
 
   await cart.save();
 
-  return status(201).json({
+  return res.status(201).json({
     message: "Product added to cart successfully",
     success: true,
+  });
+}
+
+export async function getCart(req, res) {
+  const user = req.user;
+  let cartItems = await CartModel.find({
+    user: user._id,
+  });
+
+  if (!cartItems) {
+    cartItems = await CartModel.create({ user: user._id });
+  }
+  return res.status(200).json({
+    message: "Cart fetched successfully",
+    success: true,
+    cartItems,
   });
 }

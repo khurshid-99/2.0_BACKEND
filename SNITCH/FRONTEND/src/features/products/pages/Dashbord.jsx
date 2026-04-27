@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useProduct } from "../hooks/product.hook";
+import { useProduct } from "../hooks/useProduct.hook";
 import { Link } from "react-router";
 
 function ProductCard({ data }) {

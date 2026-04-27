@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { useProduct } from "../hooks/product.hook";
+import { useProduct } from "../hooks/useProduct.hook";
 // import { useProduct } from "../hooks/useProduct";
 
 const CURRENCIES = ["INR", "USD", "AFN", "JPY", "GBP", "CHF", "EUR"];

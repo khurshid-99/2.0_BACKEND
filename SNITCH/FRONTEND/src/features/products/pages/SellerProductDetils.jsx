@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useProduct } from "../hooks/product.hook";
+import { useProduct } from "../hooks/useProduct.hook";
 import { useParams } from "react-router";
 
 const PlusIcon = () => (

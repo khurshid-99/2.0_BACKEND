@@ -243,8 +243,8 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router";
-import { useProduct } from "../hooks/useProduct";
-import { useCart } from "../../cart/hook/useCart";
+import { useProduct } from "../hooks/useProduct.hook";
+import { useCart } from "../../cart/hooks/useCart.hook";
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -252,12 +252,14 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const navigate = useNavigate();
-  const { handleGetProductById } = useProduct();
+  const { handleGetProductDetilsById } = useProduct();
   const { handleAddItem } = useCart();
+
+
 
   async function fetchProductDetails() {
     try {
-      const data = await handleGetProductById(productId);
+      const data = await handleGetProductDetilsById(productId);
       // Handle both cases depending on how API is structured
       setProduct(data?.product || data);
     } catch (error) {

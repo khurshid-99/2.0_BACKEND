@@ -47,6 +47,6 @@ import cardRouter from "./routes/card.routes.js";
 
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter)
-app.use("/api/card", cardRouter)
+app.use("/api/cart", cardRouter)
 
 export default app;
