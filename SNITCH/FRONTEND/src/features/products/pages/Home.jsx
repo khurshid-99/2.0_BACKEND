@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 function ProductCard({ data }) {
-  console.log(data);
+  // console.log(data);
 
   function formatPrice(value) {
     return new Intl.NumberFormat(`en`, {
@@ -52,7 +52,7 @@ const Home = () => {
     handleGetAllProducts();
   }, []);
 
-  console.log(products);
+  // console.log(products);
 
   if (loading) {
     return (

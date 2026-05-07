@@ -38,7 +38,8 @@ export async function addToCart(req, res) {
     const quantityInCart = cart.items.find(
       (item) =>
         item.product.toString() === productId &&
-        item.variant?.toString() === variantId).quantity;
+        item.variant?.toString() === variantId,
+    ).quantity;
 
     if (quantityInCart + quantity > stock) {
       return res.status(400).json({
@@ -86,16 +87,76 @@ export async function addToCart(req, res) {
 
 export async function getCart(req, res) {
   const user = req.user;
-  let cartItems = await CartModel.find({
+  let cart = await CartModel.findOne({
     user: user._id,
-  });
+  }).populate("items.product");
 
-  if (!cartItems) {
-    cartItems = await CartModel.create({ user: user._id });
+  if (!cart) {
+    cart = await CartModel.create({ user: user._id });
   }
   return res.status(200).json({
     message: "Cart fetched successfully",
     success: true,
-    cartItems,
+    cart,
   });
+}
+
+export async function incrementCartItem(req, res) {
+  const { productId, variantId } = req.params;
+  const user = req.user;
+
+  const product = await ProductModel.findOne({
+    _id: productId,
+    "variants._id": variantId,
+  });
+
+  if (!product) {
+    return res.status(404).json({
+      message: "Product or variant not found.",
+      success: false,
+    });
+  }
+
+  const cart = await CartModel.findOne({ user: user._id });
+
+  if (!cart) {
+    return res.status(404).json({
+      messaage: "Cart not found",
+      success: false,
+    });
+  }
+
+  const stock = await stockOfVariant(productId, variantId);
+
+  const itemQuantityInCart =
+    cart.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.variant?.toString() === variantId,
+    )?.quantity || 0;
+
+  if (itemQuantityInCart + 1 > stock) {
+    return res.status(400).json({
+      messaage: `Only ${stock} items left in stock. and already have ${itemQuantityInCart} item in your cart.`,
+      success: false,
+    });
+  }
+
+  await CartModel.findOneAndUpdate(
+    {
+      user: user._id,
+      "items.product": productId,
+      "items.variant": variantId,
+    },
+    {
+      $inc: { "items.$.quantity": 1 },
+    },
+    { new: true },
+  );
+
+  return res.status(200).json({
+    message : "Cart item quantity incremented successfully",
+    success: true,
+
+  })
 }

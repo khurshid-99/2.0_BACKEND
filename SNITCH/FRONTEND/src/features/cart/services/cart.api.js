@@ -12,8 +12,16 @@ export async function addToCart({ productId, variantId }) {
 
   return respons.data;
 }
-export async function getProductItems() {
-  const respons = await cartApi.post(`/`);
-
+export async function getCart() {
+  const respons = await cartApi.get(`/`);
+  // console.log(respons)
   return respons.data;
+}
+
+export async function updateCartItem({ productId, variantId }) {
+  const data = await cartApi.patch(
+    `/quantity/increment/${productId}/${variantId}`,
+  );
+
+  return data;
 }

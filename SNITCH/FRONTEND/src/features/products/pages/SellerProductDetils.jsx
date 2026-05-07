@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useProduct } from "../hooks/useProduct.hook";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 const PlusIcon = () => (
   <svg
@@ -221,6 +221,9 @@ const SellerProductDetils = () => {
   // console.log(product);
   return (
     <div className="w-full bg-[#F9F2EE] px-4 py-2 ">
+      <Link to={-1} className="text-[1.5rem] hover:text-[red] ">
+            Back
+          </Link>
       <div className="w-full flex justify-center gap-4 ">
         <div className="w-[20rem] ">
           <div className="flex flex-col gap-4 ">

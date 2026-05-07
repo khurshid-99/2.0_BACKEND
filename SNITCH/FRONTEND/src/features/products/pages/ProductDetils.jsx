@@ -255,8 +255,6 @@ const ProductDetail = () => {
   const { handleGetProductDetilsById } = useProduct();
   const { handleAddItem } = useCart();
 
-
-
   async function fetchProductDetails() {
     try {
       const data = await handleGetProductDetilsById(productId);
@@ -388,6 +386,9 @@ const ProductDetail = () => {
         }}
       >
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24 pt-12 lg:pt-20">
+          <Link to={-1} className="text-[1.5rem] hover:text-[red] ">
+            Back
+          </Link>
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
             {/* ── LEFT: Image Gallery ── */}
             <div className="w-full lg:w-[70%] flex flex-col-reverse md:flex-row gap-4 lg:gap-6">
