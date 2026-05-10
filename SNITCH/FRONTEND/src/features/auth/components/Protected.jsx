@@ -10,7 +10,7 @@ const Protected = ({ children, role = "buyer" }) => {
   // console.log(user)
 
   if (loading) {
-    console.log(loading)
+    // console.log(loading)
     return (
       <main>
         <h1>Loading...</h1>

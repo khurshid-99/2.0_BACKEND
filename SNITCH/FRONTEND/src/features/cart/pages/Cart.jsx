@@ -21,7 +21,7 @@ const tokens = {
 };
 
 const Cart = () => {
-  const cartItems = useSelector((state) => state.cart.items);
+  const cart = useSelector((state) => state.cart);
   const { handleGetCart, handleIncrementCartItem } = useCart();
   const navigate = useNavigate();
 
@@ -32,16 +32,18 @@ const Cart = () => {
     handleGetCart();
   }, []);
 
+  console.log(cart);
+
   /* Sync local qty state when cartItems arrive */
   useEffect(() => {
-    if (cartItems?.length) {
+    if (cart?.length) {
       const initial = {};
-      cartItems.forEach((item) => {
+      cart.forEach((item) => {
         initial[item._id] = item.quantity ?? 1;
       });
       setQuantities(initial);
     }
-  }, [cartItems]);
+  }, [cart]);
 
   const changeQty = (id, delta) => {
     setQuantities((prev) => ({
@@ -51,20 +53,20 @@ const Cart = () => {
   };
 
   /* ─── Derived totals ─── */
-  const subtotal =
-    cartItems?.reduce((sum, item) => {
-      const qty = quantities[item._id] ?? item.quantity ?? 1;
-      return sum + (item.price?.amount ?? 0) * qty;
-    }, 0) ?? 0;
+  // const subtotal =
+  //   cart?.reduce((sum, item) => {
+  //     const qty = quantities[item._id] ?? item.quantity ?? 1;
+  //     return sum + (item.price?.amount ?? 0) * qty;
+  //   }, 0) ?? 0;
 
-  const freeShippingThreshold = 15000;
-  const shippingFree = subtotal >= freeShippingThreshold;
-  const totalPieces = cartItems?.length ?? 0;
+  // const freeShippingThreshold = 15000;
+  // const shippingFree = subtotal >= freeShippingThreshold;
+  // const totalPieces = cartItems?.length ?? 0;
 
   /* ─── Helpers ─── */
   const getVariantDetails = (product, variantId) => {
     if (!product?.variants || !variantId) return null;
-    return product.variants.find((v) => v._id === variantId) ?? null;
+    return product.variants
   };
 
   const getDisplayImage = (product, variant) => {
@@ -77,7 +79,7 @@ const Cart = () => {
     `${currency} ${Number(amount).toLocaleString("en-IN")}`;
 
   /* ─── Empty state ─── */
-  if (!cartItems?.length) {
+  if (!cart) {
     return (
       <>
         <link
@@ -193,20 +195,20 @@ const Cart = () => {
                   className="text-[10px] uppercase tracking-[0.24em] font-medium"
                   style={{ color: tokens.muted }}
                 >
-                  {totalPieces} {totalPieces === 1 ? "piece" : "pieces"}
+                  {cart.totalPrice} {cart.totalPrice === 1 ? "piece" : "pieces"}
                 </p>
               </div>
 
               {/* ── Cart Item List ── */}
               <div className="flex flex-col gap-6">
-                {cartItems.map((item) => {
+                {cart.items?.map((item) => {
                   const {
                     product,
                     variant: variantId,
                     price,
                     product: { _id },
                   } = item;
-                  console.log(product);
+                  // console.log(product);
                   const variantDetail = getVariantDetails(product, variantId);
                   const imageUrl = getDisplayImage(product, variantDetail);
                   const displayPrice =
@@ -214,10 +216,10 @@ const Cart = () => {
                   const qty = quantities[_id] ?? item.quantity ?? 1;
                   const attributes = variantDetail?.attributes ?? {};
                   const stock = variantDetail?.stock;
-
+                  // console.log(item)
                   return (
                     <div
-                      key={_id}
+                      key={item._id}
                       className="flex gap-6 md:gap-8 p-6 md:p-8 transition-all duration-300"
                       style={{ backgroundColor: tokens.surfaceLow }}
                     >
@@ -442,7 +444,7 @@ const Cart = () => {
                       className="text-[11px] uppercase tracking-[0.12em] font-medium"
                       style={{ color: tokens.onSurface }}
                     >
-                      {formatCurrency(subtotal)}
+                      {formatCurrency(cart.totalPrice)}
                     </span>
                   </div>
 
@@ -455,9 +457,12 @@ const Cart = () => {
                     </span>
                     <span
                       className="text-[10px] uppercase tracking-[0.1em]"
-                      style={{ color: shippingFree ? "#5a7a5a" : tokens.muted }}
+                      style={{
+                        color:
+                          cart.totalPrice >= 15000 ? "#5a7a5a" : tokens.muted,
+                      }}
                     >
-                      {shippingFree
+                      {cart.totalPrice >= 15000
                         ? "Complimentary"
                         : `Complimentary over INR 15,000`}
                     </span>
@@ -497,7 +502,7 @@ const Cart = () => {
                     className="text-base uppercase tracking-[0.18em] font-medium"
                     style={{ color: tokens.onSurface }}
                   >
-                    {formatCurrency(subtotal)}
+                    {formatCurrency(cart.totalPrice)}
                   </span>
                 </div>
 

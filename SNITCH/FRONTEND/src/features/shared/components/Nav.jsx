@@ -37,16 +37,29 @@ const Nav = () => {
 
       <div>
         {user ? (
-          <NavLink
-            to={"/cart"}
-            className={({ isActive }) =>
-              `
+          user?.role === "seller" ? (
+            <NavLink
+              to={"/cart-seller"}
+              className={({ isActive }) =>
+                `
                text-[1.1rem] font-semibold ${isActive ? "text-[red]" : "text-[black]"}
               `
-            }
-          >
-            Cart
-          </NavLink>
+              }
+            >
+              Cart
+            </NavLink>
+          ) : (
+            <NavLink
+              to={"/cart"}
+              className={({ isActive }) =>
+                `
+               text-[1.1rem] font-semibold ${isActive ? "text-[red]" : "text-[black]"}
+              `
+              }
+            >
+              Cart
+            </NavLink>
+          )
         ) : (
           <div className="flex gap-4 items-center ">
             <Link

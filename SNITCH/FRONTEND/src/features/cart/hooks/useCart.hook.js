@@ -12,8 +12,8 @@ export function useCart() {
 
   async function handleGetCart() {
     const data = await getCart();
-    console.log(data);
-    dispatch(setCart(data.cart.items));
+    console.log(data.cart);
+    dispatch(setCart(data.cart));
     // return data;
   }
 

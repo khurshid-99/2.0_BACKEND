@@ -67,6 +67,14 @@ export const routes = createBrowserRouter([
           </Protected>
         ),
       },
+      {
+        path: "/cart-seller",
+        element: (
+          <Protected role="seller">
+            <Cart />
+          </Protected>
+        ),
+      },
     ],
   },
 ]);
