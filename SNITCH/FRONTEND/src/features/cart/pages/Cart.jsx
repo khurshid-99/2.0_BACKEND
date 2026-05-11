@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { useCart } from "../hooks/useCart.hook";
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
 /* ─── Inline styles & tokens matching the "Avenue Montaigne" design system ─── */
 const tokens = {
@@ -22,8 +23,16 @@ const tokens = {
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const { handleGetCart, handleIncrementCartItem } = useCart();
+  const {
+    handleGetCart,
+    handleIncrementCartItem,
+    handleCreateOrder,
+    handleVerifyCartOrder,
+  } = useCart();
+  const user = useSelector((state) => state.auth.user);
+  console.log(user);
   const navigate = useNavigate();
+  const { error, isLoading, Razorpay } = useRazorpay();
 
   /* Local quantity state — key: cartItem._id, value: number */
   const [quantities, setQuantities] = useState({});
@@ -52,21 +61,10 @@ const Cart = () => {
     }));
   };
 
-  /* ─── Derived totals ─── */
-  // const subtotal =
-  //   cart?.reduce((sum, item) => {
-  //     const qty = quantities[item._id] ?? item.quantity ?? 1;
-  //     return sum + (item.price?.amount ?? 0) * qty;
-  //   }, 0) ?? 0;
-
-  // const freeShippingThreshold = 15000;
-  // const shippingFree = subtotal >= freeShippingThreshold;
-  // const totalPieces = cartItems?.length ?? 0;
-
   /* ─── Helpers ─── */
   const getVariantDetails = (product, variantId) => {
     if (!product?.variants || !variantId) return null;
-    return product.variants
+    return product.variants;
   };
 
   const getDisplayImage = (product, variant) => {
@@ -77,6 +75,43 @@ const Cart = () => {
 
   const formatCurrency = (amount, currency = "INR") =>
     `${currency} ${Number(amount).toLocaleString("en-IN")}`;
+
+  const handleCheckout = async () => {
+    const order = await handleCreateOrder();
+    console.log(order);
+
+    const options = {
+      key: "rzp_test_So0YIkTcAJgGRO",
+      amount: "order.amount", // Amount in paise
+      currency: order.currency,
+      name: "Test Company",
+      description: "Test Transaction",
+      order_id: order.id, // Generate order_id on server
+      handler: async (response) => {
+        console.log(response);
+        // alert("Payment Successful!");
+
+        const isValid = await handleVerifyCartOrder(response);
+
+        console.log(isValid);
+
+        if (isValid) {
+          navigate(`/order-success?order_id=${response.razorpay_order_id}`);
+        }
+      },
+      prefill: {
+        name: user.fullname,
+        email: user.email,
+        contact: user.contact,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+  };
 
   /* ─── Empty state ─── */
   if (!cart) {
@@ -522,6 +557,7 @@ const Cart = () => {
                     e.currentTarget.style.backgroundColor = tokens.onSurface;
                     e.currentTarget.style.color = tokens.surface;
                   }}
+                  onClick={handleCheckout}
                 >
                   Proceed to Checkout
                 </button>

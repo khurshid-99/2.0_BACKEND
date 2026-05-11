@@ -29,13 +29,26 @@ if (!process.env.IMAGEKIT_PRIVATE_KEY) {
   );
 }
 
-const config = {
+if (!process.env.RAZORPAY_TEST_API_KEY) {
+  throw new Error(
+    "RAZORPAY_TEST_API_KEY is not defind in envrionment variables",
+  );
+}
+if (!process.env.RAZORPAY_TEST_SECRET_KEY) {
+  throw new Error(
+    "RAZORPAY_TEST_SECRET_KEY is not defind in envrionment variables",
+  );
+}
+
+const CONFIG = {
   MONGO_URI: process.env.MONGO_URI,
   JWT_SECRET: process.env.JWT_SECRET,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   NODE_ENV: process.env.NODE_ENV,
   IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
+  RAZORPAY_TEST_API_KEY: process.env.RAZORPAY_TEST_API_KEY,
+  RAZORPAY_TEST_SECRET_KEY: process.env.RAZORPAY_TEST_SECRET_KEY,
 };
 
-export default config;
+export default CONFIG;

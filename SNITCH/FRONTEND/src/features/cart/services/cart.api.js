@@ -14,14 +14,35 @@ export async function addToCart({ productId, variantId }) {
 }
 export async function getCart() {
   const respons = await cartApi.get(`/`);
-  // console.log(respons)
+  // console.log(respons);
   return respons.data;
 }
 
 export async function updateCartItem({ productId, variantId }) {
-  const data = await cartApi.patch(
+  const respons = await cartApi.patch(
     `/quantity/increment/${productId}/${variantId}`,
   );
 
-  return data;
+  console.log(respons.data);
+  return respons.data;
+}
+
+export async function createOrder() {
+  const respons = await cartApi.post("/paymen/create/order");
+  console.log(respons.data);
+  return respons.data;
+}
+
+export async function verifyCartOrder({
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature,
+}) {
+  const respons =await cartApi.post("/payment/verify/order", {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  });
+
+  return respons.data;
 }

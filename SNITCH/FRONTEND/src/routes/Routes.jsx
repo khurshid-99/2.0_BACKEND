@@ -9,6 +9,7 @@ import ProductDetils from "../features/products/pages/ProductDetils";
 import SellerProductDetils from "../features/products/pages/SellerProductDetils";
 import AppLayout from "../app/AppLayout";
 import Cart from "../features/cart/pages/Cart";
+import OrderSuccess from "../features/cart/pages/OrderSuccess";
 
 export const routes = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ export const routes = createBrowserRouter([
           </Protected>
         ),
       },
+      {
+        path:"/order-success",
+        element:<OrderSuccess />
+      }
     ],
   },
 ]);
