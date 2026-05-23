@@ -1,6 +1,10 @@
 import express from "express";
+import morgan from "morgan";
+import cors from "cors"
 
 const app = express();
+app.use(morgan("dev"))
+app.use(express.static("public"))
 
 app.get("/api/users", (req, res) => {
   const user = [
@@ -14,6 +18,15 @@ app.get("/api/users", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+app.get("*name", (req, res) => {
+    res.sendFile("public/index.html", { root: __dirname });
+});
+
+
+app.listen(3000,() => {
   console.log(`Server is running on PORT http://localhost:3000 `);
 });
