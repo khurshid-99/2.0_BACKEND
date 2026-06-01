@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: porduct-services
+spec:
+  selector:
+    app: product
+  type:  ClusterIP 
+  ports:
+  - name:  product-services-port
+    port:  80
+    targetPort:  8080

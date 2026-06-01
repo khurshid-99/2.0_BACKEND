@@ -16,3 +16,12 @@ spec:
             name: main-service
             port: 
               number: 80
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/product"
+        backend:
+          service:
+            name: porduct-services
+            port:
+              number: 80
