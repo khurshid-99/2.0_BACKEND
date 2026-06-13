@@ -17,6 +17,7 @@ spec:
       containers:
       - image: router:latest
         name:  router-server
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             cpu: "500m"
