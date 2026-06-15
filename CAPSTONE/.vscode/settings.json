@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/rbac.authorization.k8s.io/v1@role": "file:///d%3A/COHORT_2.0/2.0_BACKEND/CAPSTONE/k8s/rbac.yml"
+    }
+}

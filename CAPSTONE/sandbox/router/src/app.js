@@ -1,7 +1,6 @@
 import express from "express";
 import morgan from "morgan";
 import { createProxyMiddleware } from "http-proxy-middleware";
-import fs from fs
 
 const app = express();
 
