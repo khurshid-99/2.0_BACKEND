@@ -1,41 +1,19 @@
 const UserModel = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {
+  generateAccessTokne,
+  generateRefreshTokne,
+} = require("../utils/generatTokens");
+const {
+  registerService,
+  loginService,
+  getAccessTokenService,
+} = require("../services/auth.service");
 
 async function registerController(req, res) {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(403).json({
-      message: "All filed are required!",
-    });
-  }
-
-  const isExistedUser = await UserModel.findOne(email);
-
-  if (isExistedUser) {
-    res.status(409).json({
-      message: "Unauthorize access User already existed",
-    });
-  }
-
-  const hasPassword = await bcrypt.hash(password, 10);
-  const newUser = await UserModel.create({
-    name,
-    email,
-    password: hasPassword,
-  });
-
-  const accessToken = jwt.sign(
-    { id: newUser._id },
-    process.env.JWT_ACCESS_TOKEN_SECRET,
-    { expiresIn: "10m" },
-  );
-
-  const refreshToken = jwt.sign(
-    { id: newUser._id },
-    process.env.JWT_REFRESH_TOKEN_SECRET,
-    { expiresIn: "1d" },
+  const { accessToken, refreshToken, newUser } = await registerService(
+    req.body,
   );
 
   res.cookie("accessToken", accessToken, {
@@ -61,29 +39,61 @@ async function registerController(req, res) {
 }
 
 async function loginController(req, res) {
-  const { email, password } = req.body;
+  const { accessToken, refreshToken, User } = await loginService(req.body, res);
 
-  if (!email || !password) {
-    return res.status(400).json({
-      message: "All filed are required!",
-    });
-  }
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: 10 * 60 * 1000,
+  });
 
-  const User = await UserModel.findOne({ email });
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
+  });
 
-  if (!User) {
-    res.status(404).json({
-      message: "User not found ",
-    });
-  }
-
-  const isPassword = await bcrypt.compare(User.password, password);
-
-  if (!isPassword) {
-    return res.status(401).json({
-      message: "Invalide credentials",
-    });
-  }
-
-
+  return res.status(200).json({
+    message: "User loggedin successfully",
+    user: User,
+  });
 }
+
+async function getAccessTokenController(req, res) {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        message: "Unauthorized request",
+      });
+    }
+
+    console.log(refreshToken);
+    const accessToken = await getAccessTokenService(refreshToken);
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+      maxAge: 10 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      message: "AccessTocken generated",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error!",
+      error,
+    });
+  }
+}
+
+module.exports = {
+  registerController,
+  loginController,
+  getAccessTokenController,
+};

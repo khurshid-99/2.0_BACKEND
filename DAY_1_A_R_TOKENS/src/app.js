@@ -1,6 +1,8 @@
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
-const express = require("express")
+const express = require("express");
+const authRoute = require("./routers/auth.route");
+const homeRouter = require("./routers/home.route");
 
 const app = express();
 
@@ -9,5 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"))
 app.use(cookieParser())
 
+
+// Routes
+app.use("/api/auth", authRoute)
+app.use("/api/home", homeRouter)
 
 module.exports= app
