@@ -1,0 +1,26 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: monospace;
+font-family: 'Gilroy';
+font-family: 'Mona-Sans';
+font-family: 'Inter';
+font-family: 'Neue Haas Grotesk Text Pro';
+font-family: 'Clash Display Variable';
+}
+html, body{
+width: 100%;
+height: 100%;
+}
+body{
+color: #fff;
+background-color: #06070a;
+background-color: #212121;
+background-color: #1e1f1d;
+background-color: #1c1f1f;
+}
+main{
+width: 100%;
+height: 100%;
+}
